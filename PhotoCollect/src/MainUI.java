@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import javax.swing.*;
         
 /**
@@ -14,10 +15,24 @@ import javax.swing.*;
  * @author Adlan Ramly
  */
 public class MainUI extends JFrame {
-    MainUI () {
+    MainUI (ArrayList<Collection> collections) {
         ButtonsRowUI br = new ButtonsRowUI();
         JTextField searchBar = new JTextField();
-        ItemListUI il = new ItemListUI();
+        
+        JPanel il = new JPanel();
+        JButton buttons[];
+        int itemSize = 10;
+        buttons = new JButton[itemSize];
+        
+        GridLayout grid = new GridLayout(2,5);
+        setLayout(grid);
+        
+        for (int i = 0; i < itemSize; i++) {
+            buttons[i] = new JButton(Integer.toString(i + 1));
+            buttons[i].setSize(10,10);
+            add(buttons[i]);
+        }
+        
         JLabel spacer = new JLabel();
         
         GridLayout grid = new GridLayout(5,1);
