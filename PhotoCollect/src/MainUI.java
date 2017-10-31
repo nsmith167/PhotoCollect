@@ -15,40 +15,84 @@ import javax.swing.*;
  * @author Adlan Ramly
  */
 public class MainUI extends JFrame {
+    
+    private ArrayList<Collection> collections;
+    
     MainUI (ArrayList<Collection> collections) {
-        ButtonsRowUI br = new ButtonsRowUI();
-        JTextField searchBar = new JTextField();
+        this.collections = collections;
+        JLabel welcomeText = new JLabel("Welcome to Photo Collect!", SwingConstants.CENTER);
         
-        JPanel il = new JPanel();
-        JButton buttons[];
-        int itemSize = 10;
-        buttons = new JButton[itemSize];
+        JPanel collectionList = new JPanel();
         
-        GridLayout grid = new GridLayout(2,5);
-        setLayout(grid);
+        GridLayout collectionsGrid = new GridLayout(2,5);
+        collectionList.setLayout(collectionsGrid);
         
-        for (int i = 0; i < itemSize; i++) {
-            buttons[i] = new JButton(Integer.toString(i + 1));
-            buttons[i].setSize(10,10);
-            add(buttons[i]);
+        for (int i = 0; i < collections.size(); i++) {
+            collectionList.add(new JButton(collections.get(i).getTitle()));
         }
         
         JLabel spacer = new JLabel();
         
-        GridLayout grid = new GridLayout(5,1);
+        GridLayout grid = new GridLayout(4,1);
         setLayout(grid);
         
-        getContentPane().add(br);
+        getContentPane().add(welcomeText);
         getContentPane().add(spacer);
-        getContentPane().add(searchBar);
         getContentPane().add(spacer);
-        getContentPane().add(il);
+        getContentPane().add(collectionList);
         
         
         
         setSize(600,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+    
+    private class CollectionUI extends JPanel
+    {
+        public CollectionUI(Collection collection)
+        {
+            JPanel ButtonRowsUI = new JPanel();
+            JButton removeButton, 
+                addButton, 
+                editButton, 
+                sortButton, 
+                statButton;
+
+            removeButton = new JButton("Remove Item");
+            addButton = new JButton("Add Item");
+            editButton = new JButton("Edit Item");
+            sortButton = new JButton("Sort Button");
+            statButton = new JButton ("VIew Statistics");
+
+            ButtonRowsUI.add(removeButton);
+            ButtonRowsUI.add(addButton);
+            ButtonRowsUI.add(editButton);
+            ButtonRowsUI.add(sortButton);
+            ButtonRowsUI.add(statButton);
+            
+            JTextField searchBar = new JTextField();
+
+            JLabel spacer = new JLabel();
+            
+            JPanel itemList = new JPanel();
+            
+            GridLayout itemGrid = new GridLayout(2,5);
+            itemList.setLayout(itemGrid);
+        
+            for (int i = 0; i < collection.getTotalItems(); i++) 
+            {
+                itemList.add(new JButton(collection.getItems().get(i).getItemName()));
+            }
+            
+            GridLayout grid = new GridLayout(4,1);
+            setLayout(grid);
+            
+            add(ButtonRowsUI);
+            add(spacer);
+            add(spacer);
+            add(itemList);
+        }
     }
 }
 
