@@ -63,4 +63,9 @@ public class Collection {
     {
         return this.items;
     }
+    
+    public int getTotalItems()
+    {
+        return this.totalItems;
+    }
 }
