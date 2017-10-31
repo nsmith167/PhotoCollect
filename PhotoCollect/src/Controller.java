@@ -1,5 +1,7 @@
 
+import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ListIterator;
 
 /*
@@ -66,5 +68,19 @@ public class Controller {
     public void showItem(Item item)
     {
         
+    }
+    
+    /**
+     * Interface for adding a new item to the current collection. To be called by the view.
+     * @param name
+     * @param description
+     * @param value
+     * @param dateTime
+     * @param tag
+     * @param image 
+     */
+    public void addItem(String name, String description, float value, Date dateTime, String tag, Image image)
+    {
+        currentCollection.addItem(new Item(name, description, value, dateTime, tag, image));
     }
 }
