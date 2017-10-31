@@ -14,9 +14,14 @@ class Item {
     private String tag;
     private Image image;
     
-    public Item(String itemName)
+    public Item(String itemName, String description, float value, Date dateTime, String tag, Image image)
     {
         this.itemName = itemName;
+        this.description = description;
+        this.value = value;
+        this.dateTime = dateTime;
+        this.tag = tag;
+        this.image = image;
     }
 
     public String getItemName() {
