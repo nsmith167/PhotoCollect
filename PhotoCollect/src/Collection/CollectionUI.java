@@ -30,14 +30,16 @@ import Item.ItemUI;
  */
 public class CollectionUI extends JPanel
 {
-    Collection collection;
-    ItemUI itemDisplay;
+    private Collection collection;
+    private ItemUI itemDisplay;
     
-    JButton removeButton, 
+    private JButton removeButton, 
             addButton,
             editButton,
             sortButton,
             statButton;
+    
+    private JTextField searchBar;
     
     public CollectionUI(Collection collection)
     {   
@@ -69,7 +71,14 @@ public class CollectionUI extends JPanel
         ButtonRowsUI.add(statButton);
         
         //Creates search bar for searching collection contents
-        JTextField searchBar = new JTextField();
+        JPanel searchPanel = new JPanel();
+        searchBar = new JTextField("Search");
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(new SearchListener());
+        GridLayout searchLayout = new GridLayout(1,2);
+        searchPanel.setLayout(searchLayout);
+        searchPanel.add(searchBar);
+        searchPanel.add(searchButton);
         
         //Create space in layout
         JLabel spacer = new JLabel();
@@ -105,6 +114,7 @@ public class CollectionUI extends JPanel
         add(itemList);
     }
     
+    //Listener for each item button in the collection UI
     private class ItemListener implements ActionListener
     {
         @Override
@@ -129,6 +139,7 @@ public class CollectionUI extends JPanel
         
     }
     
+    //Listner for the function buttons
     private class FunctionsListener implements ActionListener
     {
 
@@ -159,5 +170,15 @@ public class CollectionUI extends JPanel
             }
         }
         
+    }
+    
+    //Listener for the search button
+    public class SearchListener implements ActionListener 
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            collection.search(searchBar.getText());
+        }    
     }
 }
