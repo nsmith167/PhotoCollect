@@ -15,13 +15,15 @@ import java.util.ListIterator;
  * @author Nathan
  */
 public class Controller {
-    private View view;
     private Collection currentCollection;
     private ArrayList<Collection> collections = new ArrayList<>();
+    private MainUI mainUI;
     
     public Controller()
     {
-        view = new View();
+        //Fill collection arraylist from db
+        //Set current collection
+        this.mainUI = new MainUI(collections);
         //Initialize collections from persistent data
     }
     
