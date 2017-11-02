@@ -1,5 +1,8 @@
+package Collection;
+
 import java.util.ArrayList;
 import java.util.Date;
+import Item.Item;
 
 /**
  * Represents a collection of photos and associated data

@@ -7,7 +7,7 @@ import java.util.Date;
  * Represents photo and photo data.
  * @author nps5120
  */
-class Item {
+public class Item {
     private String itemName;
     private String description;
     private float value;
