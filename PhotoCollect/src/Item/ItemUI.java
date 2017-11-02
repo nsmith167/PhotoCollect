@@ -12,6 +12,10 @@ import javax.swing.*;
  * @author ajr5723
  */
 public class ItemUI extends JFrame{
+    private JLabel itemName;
+    private JTextField itemNameTextField;
+    
+    
     public ItemUI(){
         this.setSize(800,600);
         this.setTitle("Edit Item");
@@ -34,5 +38,7 @@ public class ItemUI extends JFrame{
             cellNumbers[i] = nextPanel;
             thePanel.add(nextPanel);
         }
+        
+        
     }
 }
