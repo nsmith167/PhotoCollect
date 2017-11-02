@@ -6,6 +6,9 @@
 package Collection;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,46 +21,58 @@ import javax.swing.JTextField;
 public class CollectionUI extends JPanel
 {
     public CollectionUI(Collection collection)
+    {
+        JPanel ButtonRowsUI = new JPanel();
+        JButton removeButton, 
+            addButton, 
+            editButton, 
+            sortButton, 
+            statButton;
+
+        removeButton = new JButton("Remove Item");
+        addButton = new JButton("Add Item");
+        editButton = new JButton("Edit Item");
+        sortButton = new JButton("Sort Button");
+        statButton = new JButton ("VIew Statistics");
+
+        ButtonRowsUI.add(removeButton);
+        ButtonRowsUI.add(addButton);
+        ButtonRowsUI.add(editButton);
+        ButtonRowsUI.add(sortButton);
+        ButtonRowsUI.add(statButton);
+
+        JTextField searchBar = new JTextField();
+
+        JLabel spacer = new JLabel();
+
+        JPanel itemList = new JPanel();
+
+        GridLayout itemGrid = new GridLayout(2,5);
+        itemList.setLayout(itemGrid);
+
+        for (int i = 0; i < collection.getTotalItems(); i++) 
         {
-            JPanel ButtonRowsUI = new JPanel();
-            JButton removeButton, 
-                addButton, 
-                editButton, 
-                sortButton, 
-                statButton;
-
-            removeButton = new JButton("Remove Item");
-            addButton = new JButton("Add Item");
-            editButton = new JButton("Edit Item");
-            sortButton = new JButton("Sort Button");
-            statButton = new JButton ("VIew Statistics");
-
-            ButtonRowsUI.add(removeButton);
-            ButtonRowsUI.add(addButton);
-            ButtonRowsUI.add(editButton);
-            ButtonRowsUI.add(sortButton);
-            ButtonRowsUI.add(statButton);
-            
-            JTextField searchBar = new JTextField();
-
-            JLabel spacer = new JLabel();
-            
-            JPanel itemList = new JPanel();
-            
-            GridLayout itemGrid = new GridLayout(2,5);
-            itemList.setLayout(itemGrid);
-        
-            for (int i = 0; i < collection.getTotalItems(); i++) 
-            {
-                itemList.add(new JButton(collection.getItems().get(i).getItemName()));
-            }
-            
-            GridLayout grid = new GridLayout(4,1);
-            setLayout(grid);
-            
-            add(ButtonRowsUI);
-            add(spacer);
-            add(spacer);
-            add(itemList);
+            itemList.add(new JButton(collection.getItems().get(i).getItemName(), collection.getItems().get(i).getImage()));
         }
+        
+        itemList.addActionListener(new ItemListener());
+        
+        GridLayout grid = new GridLayout(4,1);
+        setLayout(grid);
+
+        add(ButtonRowsUI);
+        add(spacer);
+        add(spacer);
+        add(itemList);
+    }
+    
+    private class ItemListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            
+        }
+        
+    }
 }
