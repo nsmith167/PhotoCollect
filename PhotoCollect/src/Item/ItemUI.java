@@ -74,6 +74,9 @@ public class ItemUI extends JFrame{
         //imagePanel.add(itemImage);
         imagePanel.add(browsePhotoButton);
         imagePanel.add(itemRarityLabel);
+        for(int i = 0; i < 5; i++){
+            //imagePanel.add(starRatingsButtons[i]);
+        }
         
         
         

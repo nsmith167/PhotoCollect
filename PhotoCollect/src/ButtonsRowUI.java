@@ -2,7 +2,11 @@
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
+import Item.*;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -36,5 +40,14 @@ public class ButtonsRowUI extends JPanel{
         add(editButton);
         add(sortButton);
         add(statButton);
+    
+        addButton.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent event)
+        {
+            System.out.println("Add Button pressed");
+            ItemUI aUI = new ItemUI(); 
+            aUI.setVisible(true);
+        };
+        });
     }
 }
