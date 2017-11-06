@@ -35,7 +35,7 @@ public class ItemUI extends JFrame{
         this.setLocationRelativeTo(null);
         
         JPanel thePanel = new JPanel();
-        thePanel.setLayout(new GridLayout(2,1));
+        thePanel.setLayout(new GridLayout(1,2));
         
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new GridLayout(3,1));
@@ -51,6 +51,8 @@ public class ItemUI extends JFrame{
         itemValueTextField = new JTextField();
         itemDescriptionTextField = new JTextField();
         addItemButton = new JButton("Add Item");
+        
+        
         
         infoPanel.add(itemNameLabel);
         infoPanel.add(itemNameTextField);
@@ -69,11 +71,16 @@ public class ItemUI extends JFrame{
            //starRatingsButtons[i] = new JButton("*"); 
         }
         
+        //imagePanel.add(itemImage);
+        imagePanel.add(browsePhotoButton);
+        imagePanel.add(itemRarityLabel);
+        
         
         
         
         thePanel.add(imagePanel);
         thePanel.add(infoPanel);
+        this.add(thePanel);
         
         
     }
