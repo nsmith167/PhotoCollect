@@ -1,3 +1,5 @@
+package Main;
+
 import Collection.Collection;
 import Collection.CollectionUI;
 /**

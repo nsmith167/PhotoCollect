@@ -1,3 +1,5 @@
+package Main;
+
 
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -18,7 +20,7 @@ import Item.*;
  * @author Adlan Ramly
  */
 public class ButtonsRowUI extends JPanel{
-    ButtonsRowUI() {
+    public ButtonsRowUI() {
     JButton removeButton, 
             addButton, 
             editButton, 

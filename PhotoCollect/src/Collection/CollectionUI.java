@@ -5,6 +5,7 @@
  */
 package Collection;
 
+import Main.ButtonsRowUI;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,28 +48,7 @@ public class CollectionUI extends JPanel
         this.collection = collection;
         
         //Panel to store buttons for collection functions
-        JPanel ButtonRowsUI = new JPanel();
-        
-        //Creates buttons for collection functions
-        removeButton = new JButton("Remove Item");
-        addButton = new JButton("Add Item");
-        editButton = new JButton("Edit Item");
-        sortButton = new JButton("Sort Button");
-        statButton = new JButton ("VIew Statistics");
-        
-        //Add listeners to buttons
-        removeButton.addActionListener(new FunctionsListener());
-        addButton.addActionListener(new FunctionsListener());
-        editButton.addActionListener(new FunctionsListener());
-        sortButton.addActionListener(new FunctionsListener());
-        statButton.addActionListener(new FunctionsListener());
-        
-        //Add buttons to button panel
-        ButtonRowsUI.add(removeButton);
-        ButtonRowsUI.add(addButton);
-        ButtonRowsUI.add(editButton);
-        ButtonRowsUI.add(sortButton);
-        ButtonRowsUI.add(statButton);
+        ButtonsRowUI btnRowUI = new ButtonsRowUI();
         
         //Creates search bar for searching collection contents
         JPanel searchPanel = new JPanel();
@@ -108,7 +88,7 @@ public class CollectionUI extends JPanel
         GridLayout grid = new GridLayout(4,1);
         setLayout(grid);
 
-        add(ButtonRowsUI);
+        add(btnRowUI);
         add(spacer);
         add(spacer);
         add(itemList);
