@@ -1,3 +1,5 @@
+package Main;
+
 
 import java.awt.Image;
 import java.util.ArrayList;
@@ -5,12 +7,10 @@ import java.util.Date;
 import java.util.ListIterator;
 import Collection.Collection;
 import Item.Item;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -23,10 +23,36 @@ public class Controller {
     
     public Controller()
     {
-        //Fill collection arraylist from db
-        //Set current collection
+        //Connect to database
+        Database db = new Database();
+        Connection connection = db.connectDB();
+        
+        
+        try
+        {
+            //Create query for getting collections
+            PreparedStatement collectionQuery = connection.prepareStatement("SELECT * FROM Collections;");
+            PreparedStatement itemsQuery = connection.prepareStatement("SELECT * FROM Items;");
+            
+            //Get result set from query
+            ResultSet collectionRS = collectionQuery.executeQuery();
+            ResultSet itemsRS = itemsQuery.executeQuery();
+            
+            //Populate collections ArrayList with results
+            collectionRS.first();
+            while (!(collectionRS.isAfterLast()))
+            {
+                collections.add(new Collection(collectionRS.getString("Name")));
+                //TODO populate items for each collection
+            }
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Database connection failed");
+        }
+        
+        //Initialize UI with collections
         this.mainUI = new MainUI(collections);
-        //Initialize collections from persistent data
     }
     
     /**
