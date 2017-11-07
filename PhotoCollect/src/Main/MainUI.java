@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import javax.swing.*;
 import Collection.Collection;
 import Collection.CollectionUI;
+import Item.Item;
+import Item.ItemUI;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
         
 /**
  *
@@ -51,6 +55,33 @@ public class MainUI extends JFrame
         setSize(600,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+    
+    private class CollectionListener implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton source = (JButton)e.getSource();
+            Collection collectionToDisplay = new Collection("");
+            boolean collectionFound = false;
+            
+            //Find the collection that matches the button pressed
+            for(int i = 0; i < collections.size() && collectionFound == false; i++)
+            {
+                if (source.getText() == collections.get(i).getTitle())
+                {
+                    collectionToDisplay = collections.get(i);
+                    collectionFound = true;
+                }
+            }
+            if (collectionFound)
+            {
+                collectionDisplay = new CollectionUI(collectionToDisplay, false);
+            }
+        }
+        }
+        
     }
     
     /**
