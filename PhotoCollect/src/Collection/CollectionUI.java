@@ -121,7 +121,7 @@ public class CollectionUI extends JPanel
         public void actionPerformed(ActionEvent e) 
         {
             JButton source = (JButton)e.getSource();
-            Item itemToDisplay;
+            Item itemToDisplay = new Item("");
             boolean itemFound = false;
             
             //Find the item that matches the button pressed
@@ -133,8 +133,10 @@ public class CollectionUI extends JPanel
                     itemFound = true;
                 }
             }
-            
-            itemDisplay = new ItemUI(itemToDisplay);
+            if (itemFound)
+            {
+                itemDisplay = new ItemUI(itemToDisplay);
+            }
         }
         
     }

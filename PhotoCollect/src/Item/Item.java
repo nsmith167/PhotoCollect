@@ -1,7 +1,7 @@
 package Item;
 
-import java.awt.Image;
 import java.util.Date;
+import javax.swing.ImageIcon;
 
 /**
  * Represents photo and photo data.
@@ -13,7 +13,7 @@ public class Item {
     private float value;
     private Date dateTime;
     private String tag;
-    private Image image;
+    private ImageIcon image;
     
     public Item(String itemName)
     {
@@ -60,11 +60,11 @@ public class Item {
         this.tag = tag;
     }
 
-    public Image getImage() {
+    public ImageIcon getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(ImageIcon image) {
         this.image = image;
     }
     
