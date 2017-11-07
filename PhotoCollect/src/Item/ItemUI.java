@@ -19,20 +19,12 @@ public class ItemUI extends JFrame{
         this.setLocationRelativeTo(null);
         
         JPanel thePanel = new JPanel();
-        thePanel.setLayout(new GridLayout(2,1));
+        thePanel.setLayout(new GridLayout(1,2));
         
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new GridLayout(3,1));
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(10,1));
-        
-        
-        JPanel[] cellNumbers = new JPanel[8];
-        for(int i = 0; i < 8; i++)
-        {
-            JPanel nextPanel = new JPanel();
-            cellNumbers[i] = nextPanel;
-            thePanel.add(nextPanel);
-        }
+
     }
 }
