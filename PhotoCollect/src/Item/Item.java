@@ -18,6 +18,11 @@ public class Item {
     public Item(String itemName)
     {
         this.itemName = itemName;
+        this.description = "";
+        this.value = 0;
+        this.dateTime = new Date();
+        this.tag = "";
+        this.image = new ImageIcon("");
     }
 
     public String getItemName() {

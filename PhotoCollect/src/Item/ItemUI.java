@@ -27,6 +27,7 @@ public class ItemUI extends JFrame{
     private JButton [] starRatingsButtons;
     
     private ImageIcon itemImage;
+    private JLabel imageLabel;
     
     public ItemUI(){
         this.setSize(800,600);
@@ -71,7 +72,8 @@ public class ItemUI extends JFrame{
            //starRatingsButtons[i] = new JButton("*"); 
         }
         
-        //imagePanel.add(itemImage);
+        imageLabel = new JLabel(itemImage);
+        imagePanel.add(imageLabel);
         imagePanel.add(browsePhotoButton);
         imagePanel.add(itemRarityLabel);
         for(int i = 0; i < 5; i++){
@@ -116,7 +118,6 @@ public class ItemUI extends JFrame{
             itemDateTextField = new JTextField(item.getDateTime().toString());
             itemValueTextField = new JTextField(item.getValue() + "");
             itemDescriptionTextField = new JTextField(item.getDescription());
-            addItemButton = new JButton("Add Item");
 
 
 
@@ -128,17 +129,15 @@ public class ItemUI extends JFrame{
             infoPanel.add(itemValueTextField);
             infoPanel.add(itemDescriptionLabel);
             infoPanel.add(itemDescriptionTextField);
-            infoPanel.add(addItemButton);
 
-            itemImage = new ImageIcon();
-            browsePhotoButton = new JButton("Browse for Photo");
+            itemImage = item.getImage();
             itemRarityLabel = new JLabel("Rarity");
             for(int i = 0; i < 5; i++){
                //starRatingsButtons[i] = new JButton("*"); 
             }
-
-            //imagePanel.add(itemImage);
-            imagePanel.add(browsePhotoButton);
+            
+            imageLabel = new JLabel(itemImage);
+            imagePanel.add(imageLabel);
             imagePanel.add(itemRarityLabel);
             for(int i = 0; i < 5; i++){
                 //imagePanel.add(starRatingsButtons[i]);
@@ -156,10 +155,13 @@ public class ItemUI extends JFrame{
             itemValueLabel = new JLabel("Value");
             itemDescriptionLabel = new JLabel("Description");
             itemNameTextField = new JTextField(item.getItemName());
+            itemNameTextField.setEditable(false);
             itemDateTextField = new JTextField(item.getDateTime().toString());
+            itemDateTextField.setEditable(false);
             itemValueTextField = new JTextField(item.getValue() + "");
+            itemValueTextField.setEditable(false);
             itemDescriptionTextField = new JTextField(item.getDescription());
-            addItemButton = new JButton("Add Item");
+            itemDescriptionTextField.setEditable(false);
 
 
 
@@ -171,16 +173,16 @@ public class ItemUI extends JFrame{
             infoPanel.add(itemValueTextField);
             infoPanel.add(itemDescriptionLabel);
             infoPanel.add(itemDescriptionTextField);
-            infoPanel.add(addItemButton);
 
-            itemImage = new ImageIcon();
+            itemImage = item.getImage();
             browsePhotoButton = new JButton("Browse for Photo");
             itemRarityLabel = new JLabel("Rarity");
             for(int i = 0; i < 5; i++){
                //starRatingsButtons[i] = new JButton("*"); 
             }
 
-            //imagePanel.add(itemImage);
+            imageLabel = new JLabel(itemImage);
+            imagePanel.add(imageLabel);
             imagePanel.add(browsePhotoButton);
             imagePanel.add(itemRarityLabel);
             for(int i = 0; i < 5; i++){

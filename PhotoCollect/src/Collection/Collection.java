@@ -40,6 +40,10 @@ public class Collection {
     public void removeItem(Item item)
     {
         items.remove(item);
+        totalItems--;
+        totalValue -= item.getValue();
+        avgRating = totalValue/totalItems;
+        this.latestItem = items.get(items.size() - 1).getItemName();
     }
     
     public void sort()

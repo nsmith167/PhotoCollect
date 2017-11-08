@@ -30,6 +30,7 @@ public class MainUI extends JFrame
         this.collections = collections;
         JLabel welcomeText = new JLabel("Welcome to Photo Collect!", SwingConstants.CENTER);
         
+        ArrayList<JButton> collectionButtons = new ArrayList<>();
         JPanel collectionList = new JPanel();
         
         GridLayout collectionsGrid = new GridLayout(2,5);
@@ -37,7 +38,9 @@ public class MainUI extends JFrame
         
         for (int i = 0; i < collections.size(); i++) 
         {
-            collectionList.add(new JButton(collections.get(i).getTitle()));
+            collectionButtons.add(new JButton(collections.get(i).getTitle()));
+            collectionButtons.get(i).addActionListener(new CollectionListener());
+            collectionList.add(collectionButtons.get(i));
         }
         
         JLabel spacer = new JLabel();
@@ -77,11 +80,10 @@ public class MainUI extends JFrame
             }
             if (collectionFound)
             {
-                collectionDisplay = new CollectionUI(collectionToDisplay, false);
+                setCurrentCollection(collectionToDisplay);
+                updateCollection(collectionToDisplay);
             }
         }
-        }
-        
     }
     
     /**
@@ -90,7 +92,10 @@ public class MainUI extends JFrame
      */
     public void updateCollection(Collection collection)
     {
+        getContentPane().removeAll();
         getContentPane().add(new CollectionUI(collection));
+        revalidate();
+        repaint();
     }
     
     /**
