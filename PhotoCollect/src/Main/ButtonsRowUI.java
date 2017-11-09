@@ -20,12 +20,15 @@ import Item.*;
  * @author Adlan Ramly
  */
 public class ButtonsRowUI extends JPanel{
-    public ButtonsRowUI() {
+    
     JButton removeButton, 
             addButton, 
             editButton, 
             sortButton, 
             statButton;
+    
+    public ButtonsRowUI() {
+    
     
         removeButton = new JButton("Remove Item");
         
@@ -42,14 +45,46 @@ public class ButtonsRowUI extends JPanel{
         add(editButton);
         add(sortButton);
         add(statButton);
+        
+        removeButton.addActionListener(new FunctionsListener());
+        addButton.addActionListener(new FunctionsListener());
+        editButton.addActionListener(new FunctionsListener());
+        sortButton.addActionListener(new FunctionsListener());
+        statButton.addActionListener(new FunctionsListener());
+    }
     
-        addButton.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent event)
+    //Listner for the function buttons
+    private class FunctionsListener implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e) 
         {
-            System.out.println("Add Button pressed");
-            ItemUI aUI = new ItemUI(); 
-            aUI.setVisible(true);
-        };
-        });
+            JButton source = (JButton)e.getSource();
+            
+            if (source == removeButton)
+            {
+                //Remove selected item from collection
+            }
+            else if (source == addButton)
+            {
+                System.out.println("Add Button pressed");
+                ItemUI aUI = new ItemUI(); 
+                aUI.setVisible(true);
+            }
+            else if (source == editButton)
+            {
+                //Open dialog to edit item details
+            }
+            else if (source == sortButton)
+            {
+                //Sort collection by some criteria
+            }
+            else if (source == statButton)
+            {
+                //Display dialog with collection statistics
+            }
+        }
+        
     }
 }

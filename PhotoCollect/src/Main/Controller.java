@@ -23,33 +23,39 @@ public class Controller {
     
     public Controller()
     {
-        //Connect to database
-        Database db = new Database();
-        Connection connection = db.connectDB();
+//        //Connect to database
+//        Database db = new Database();
+//        Connection connection = db.connectDB();
+//        
+//        
+//        try
+//        {
+//            //Create query for getting collections
+//            PreparedStatement collectionQuery = connection.prepareStatement("SELECT * FROM Collections;");
+//            PreparedStatement itemsQuery = connection.prepareStatement("SELECT * FROM Items;");
+//            
+//            //Get result set from query
+//            ResultSet collectionRS = collectionQuery.executeQuery();
+//            ResultSet itemsRS = itemsQuery.executeQuery();
+//            
+//            //Populate collections ArrayList with results
+//            collectionRS.first();
+//            while (!(collectionRS.isAfterLast()))
+//            {
+//                collections.add(new Collection(collectionRS.getString("Name")));
+//                //TODO populate items for each collection
+//            }
+//        }
+//        catch(SQLException e)
+//        {
+//            System.out.println("Database connection failed");
+//        }
         
-        
-        try
-        {
-            //Create query for getting collections
-            PreparedStatement collectionQuery = connection.prepareStatement("SELECT * FROM Collections;");
-            PreparedStatement itemsQuery = connection.prepareStatement("SELECT * FROM Items;");
-            
-            //Get result set from query
-            ResultSet collectionRS = collectionQuery.executeQuery();
-            ResultSet itemsRS = itemsQuery.executeQuery();
-            
-            //Populate collections ArrayList with results
-            collectionRS.first();
-            while (!(collectionRS.isAfterLast()))
-            {
-                collections.add(new Collection(collectionRS.getString("Name")));
-                //TODO populate items for each collection
-            }
-        }
-        catch(SQLException e)
-        {
-            System.out.println("Database connection failed");
-        }
+        //TEST
+        Collection testCollection = new Collection("Test");
+        Item testItem = new Item("TEST");
+        testCollection.addItem(testItem);
+        collections.add(testCollection);
         
         //Initialize UI with collections
         this.mainUI = new MainUI(collections);

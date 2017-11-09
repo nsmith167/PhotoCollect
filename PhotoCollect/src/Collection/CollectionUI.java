@@ -115,40 +115,8 @@ public class CollectionUI extends JPanel
             }
             if (itemFound)
             {
-                itemDisplay = new ItemUI(itemToDisplay);
-            }
-        }
-        
-    }
-    
-    //Listner for the function buttons
-    private class FunctionsListener implements ActionListener
-    {
-
-        @Override
-        public void actionPerformed(ActionEvent e) 
-        {
-            JButton source = (JButton)e.getSource();
-            
-            if (source == removeButton)
-            {
-                //Remove selected item from collection
-            }
-            else if (source == addButton)
-            {
-                //Open dialog to add new item to collection
-            }
-            else if (source == editButton)
-            {
-                //Open dialog to edit item details
-            }
-            else if (source == sortButton)
-            {
-                //Sort collection by some criteria
-            }
-            else if (source == statButton)
-            {
-                //Display dialog with collection statistics
+                itemDisplay = new ItemUI(itemToDisplay, false);
+                itemDisplay.setVisible(true);
             }
         }
         
