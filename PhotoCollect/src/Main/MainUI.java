@@ -24,14 +24,45 @@ public class MainUI extends JFrame
     
     private ArrayList<Collection> collections;
     private Collection currentCollection;
+    private JLabel welcomeText;
+    private JLabel spacer;
+    private JMenuBar menuBar;
+    private JPanel collectionList;
     
     MainUI (ArrayList<Collection> collections) 
     {
         this.collections = collections;
-        JLabel welcomeText = new JLabel("Welcome to Photo Collect!", SwingConstants.CENTER);
+        welcomeText = new JLabel("Welcome to Photo Collect!", SwingConstants.CENTER);
+        
+        //Create menu bar
+        menuBar = new JMenuBar();
+        
+        //Create menu on bar
+        JMenu optionsMenu = new JMenu("Options");
+        
+        //Create items to appear on menu
+        JMenuItem saveItem = new JMenuItem("Save Collection");
+        JMenuItem newItem = new JMenuItem("New Collection");
+        JMenuItem openItem = new JMenuItem("Open Collection");
+        JMenuItem closeItem = new JMenuItem("Close Collection");
+        JMenuItem importItem = new JMenuItem("Import Collection");
+        JMenuItem exportItem = new JMenuItem("Export Collection");
+        
+        //Add items to menu
+        optionsMenu.add(saveItem);
+        optionsMenu.add(newItem);
+        optionsMenu.add(openItem);
+        optionsMenu.add(closeItem);
+        optionsMenu.add(importItem);
+        optionsMenu.add(exportItem);
+        
+        //Add menu to menu bar
+        menuBar.add(optionsMenu);
+        
+        this.add(menuBar);
         
         ArrayList<JButton> collectionButtons = new ArrayList<>();
-        JPanel collectionList = new JPanel();
+        collectionList = new JPanel();
         
         GridLayout collectionsGrid = new GridLayout(2,5);
         collectionList.setLayout(collectionsGrid);
@@ -43,7 +74,7 @@ public class MainUI extends JFrame
             collectionList.add(collectionButtons.get(i));
         }
         
-        JLabel spacer = new JLabel();
+        spacer = new JLabel();
         
         GridLayout grid = new GridLayout(4,1);
         setLayout(grid);
@@ -92,7 +123,9 @@ public class MainUI extends JFrame
      */
     public void updateCollection(Collection collection)
     {
-        getContentPane().removeAll();
+        getContentPane().remove(spacer);
+        getContentPane().remove(welcomeText);
+        getContentPane().remove(collectionList);
         getContentPane().add(new CollectionUI(collection));
         revalidate();
         repaint();

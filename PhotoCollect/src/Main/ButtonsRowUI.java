@@ -1,6 +1,9 @@
 package Main;
 
 
+import Collection.Collection;
+import Collection.CollectionUI;
+import CollectionStats.CollectionStatisticsUI;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -21,34 +24,23 @@ import Item.*;
  */
 public class ButtonsRowUI extends JPanel{
     
-    JButton removeButton, 
-            addButton, 
-            editButton, 
+    private JButton addButton, 
             sortButton, 
             statButton;
     
     public ButtonsRowUI() {
-    
-    
-        removeButton = new JButton("Remove Item");
         
         addButton = new JButton("Add Item");
-        
-        editButton = new JButton("Edit Item");
         
         sortButton = new JButton("Sort Button");
         
         statButton = new JButton ("VIew Statistics");
         
-        add(removeButton);
         add(addButton);
-        add(editButton);
         add(sortButton);
         add(statButton);
         
-        removeButton.addActionListener(new FunctionsListener());
         addButton.addActionListener(new FunctionsListener());
-        editButton.addActionListener(new FunctionsListener());
         sortButton.addActionListener(new FunctionsListener());
         statButton.addActionListener(new FunctionsListener());
     }
@@ -62,19 +54,11 @@ public class ButtonsRowUI extends JPanel{
         {
             JButton source = (JButton)e.getSource();
             
-            if (source == removeButton)
-            {
-                //Remove selected item from collection
-            }
-            else if (source == addButton)
+            if (source == addButton)
             {
                 System.out.println("Add Button pressed");
                 ItemUI aUI = new ItemUI(); 
                 aUI.setVisible(true);
-            }
-            else if (source == editButton)
-            {
-                //Open dialog to edit item details
             }
             else if (source == sortButton)
             {
@@ -82,7 +66,8 @@ public class ButtonsRowUI extends JPanel{
             }
             else if (source == statButton)
             {
-                //Display dialog with collection statistics
+                CollectionStatisticsUI statsUI = new CollectionStatisticsUI();
+                statsUI.setVisible(true);
             }
         }
         

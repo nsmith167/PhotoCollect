@@ -11,16 +11,19 @@ import java.awt.event.*;
 
 import java.util.Random;
 
-public class CollectionStatisticsUI extends JPanel implements ActionListener {
+public class CollectionStatisticsUI extends JFrame {
 
     JLabel ItemNameLanel, DateLabel, ValueLabel, DescriptionLabel;
     JTextField ItemNameTF, DateTF, ValueTF, DescriptionTF;
-    JButton PicButton, backButton;
 
 
     public CollectionStatisticsUI() {
         super();
-
+        
+        this.setSize(400,400);
+        this.setTitle("Collection Statistics");
+        this.setLocationRelativeTo(null);
+        
         setLayout(null);
         JLabel TotalItemsLabel = new JLabel("Total Items: ");
         JLabel TotalItemsLabel2 = new JLabel("N/A");
@@ -32,7 +35,6 @@ public class CollectionStatisticsUI extends JPanel implements ActionListener {
         JLabel CollStartDateLabel2 = new JLabel("N/A");
         JLabel LatestItemLabel = new JLabel("Latest Item: ");
         JLabel LatestItemLabel2 = new JLabel("N/A");
-        JButton BackButton = new JButton("Back");
           
         add(TotalItemsLabel);
         add(TotalItemsLabel2);
@@ -44,7 +46,6 @@ public class CollectionStatisticsUI extends JPanel implements ActionListener {
         add(CollStartDateLabel2);
         add(LatestItemLabel);
         add(LatestItemLabel2);       
-        add(BackButton);
         
         TotalItemsLabel.setBounds(new Rectangle(50, 0, 100, 50));
         TotalValueLabel.setBounds(new Rectangle(50, 75, 100, 50));
@@ -57,14 +58,5 @@ public class CollectionStatisticsUI extends JPanel implements ActionListener {
         AvgRatingLabel2.setBounds(new Rectangle(300, 150, 100, 50));
         CollStartDateLabel2.setBounds(new Rectangle(300, 225, 100, 50));
         LatestItemLabel2.setBounds(new Rectangle(300, 300, 100, 50));
-        
-        BackButton.setBounds(new Rectangle(25, 390, 525, 50));
     }
-    
-    public void actionPerformed(ActionEvent event)
-    {
-        //Return to main menu - Redraw Panels
-    }
-
-    
 }

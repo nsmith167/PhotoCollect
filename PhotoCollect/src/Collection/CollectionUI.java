@@ -34,12 +34,6 @@ public class CollectionUI extends JPanel
     private Collection collection;
     private ItemUI itemDisplay;
     
-    private JButton removeButton, 
-            addButton,
-            editButton,
-            sortButton,
-            statButton;
-    
     private JTextField searchBar;
     
     public CollectionUI(Collection collection)
@@ -115,7 +109,7 @@ public class CollectionUI extends JPanel
             }
             if (itemFound)
             {
-                itemDisplay = new ItemUI(itemToDisplay, false);
+                itemDisplay = new ItemUI(itemToDisplay);
                 itemDisplay.setVisible(true);
             }
         }
@@ -130,5 +124,10 @@ public class CollectionUI extends JPanel
         {
             collection.search(searchBar.getText());
         }    
+    }
+    
+    public Collection getCollection()
+    {
+        return this.collection;
     }
 }
