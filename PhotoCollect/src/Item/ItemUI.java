@@ -24,6 +24,9 @@ public class ItemUI extends JFrame{
     
     private JButton addItemButton;
     private JButton browsePhotoButton;
+    private JButton editItemButton;
+    private JButton deleteItemButton;
+    private JButton saveItemButton;
     private JButton [] starRatingsButtons;
     
     private ImageIcon itemImage;
@@ -32,7 +35,6 @@ public class ItemUI extends JFrame{
     public ItemUI(){
         this.setSize(800,600);
         this.setTitle("New Item");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         
         JPanel thePanel = new JPanel();
@@ -80,6 +82,17 @@ public class ItemUI extends JFrame{
             //imagePanel.add(starRatingsButtons[i]);
         }
         
+        addItemButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                infoPanel.removeAll();
+                imagePanel.removeAll();
+                thePanel.add(new JLabel("Item Created"));
+                repaint();
+                revalidate();
+                //add item, update collectionUI
+            }
+        });
         
         
         
@@ -93,7 +106,7 @@ public class ItemUI extends JFrame{
     /**
      * Constructor in the case of a window for viewing or editing
      */
-    public ItemUI(Item item, boolean editable){
+    public ItemUI(Item item){
         
         JPanel thePanel = new JPanel();
         thePanel.setLayout(new GridLayout(1,2));
@@ -103,94 +116,98 @@ public class ItemUI extends JFrame{
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(10,1));
             
-        if (editable)
-        {
-            this.setSize(800,600);
-            this.setTitle("Edit Item");
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setLocationRelativeTo(null);
+        this.setSize(800,600);
+        this.setTitle("Item Details");
+        this.setLocationRelativeTo(null);
 
-            itemNameLabel = new JLabel("Item Name");
-            itemDateLabel = new JLabel("Date");
-            itemValueLabel = new JLabel("Value");
-            itemDescriptionLabel = new JLabel("Description");
-            itemNameTextField = new JTextField(item.getItemName());
-            itemDateTextField = new JTextField(item.getDateTime().toString());
-            itemValueTextField = new JTextField(item.getValue() + "");
-            itemDescriptionTextField = new JTextField(item.getDescription());
+        itemNameLabel = new JLabel("Item Name");
+        itemDateLabel = new JLabel("Date");
+        itemValueLabel = new JLabel("Value");
+        itemDescriptionLabel = new JLabel("Description");
+        itemNameTextField = new JTextField(item.getItemName());
+        itemNameTextField.setEditable(false);
+        itemDateTextField = new JTextField(item.getDateTime().toString());
+        itemDateTextField.setEditable(false);
+        itemValueTextField = new JTextField(item.getValue() + "");
+        itemValueTextField.setEditable(false);
+        itemDescriptionTextField = new JTextField(item.getDescription());
+        itemDescriptionTextField.setEditable(false);
+        editItemButton = new JButton("Edit");
+        deleteItemButton = new JButton("Delete");
+        saveItemButton = new JButton("Save");
 
 
 
-            infoPanel.add(itemNameLabel);
-            infoPanel.add(itemNameTextField);
-            infoPanel.add(itemDateLabel);
-            infoPanel.add(itemDateTextField);
-            infoPanel.add(itemValueLabel);
-            infoPanel.add(itemValueTextField);
-            infoPanel.add(itemDescriptionLabel);
-            infoPanel.add(itemDescriptionTextField);
+        infoPanel.add(itemNameLabel);
+        infoPanel.add(itemNameTextField);
+        infoPanel.add(itemDateLabel);
+        infoPanel.add(itemDateTextField);
+        infoPanel.add(itemValueLabel);
+        infoPanel.add(itemValueTextField);
+        infoPanel.add(itemDescriptionLabel);
+        infoPanel.add(itemDescriptionTextField);
+        infoPanel.add(editItemButton);
+        infoPanel.add(deleteItemButton);
 
-            itemImage = item.getImage();
-            itemRarityLabel = new JLabel("Rarity");
-            for(int i = 0; i < 5; i++){
-               //starRatingsButtons[i] = new JButton("*"); 
+        itemImage = item.getImage();
+        browsePhotoButton = new JButton("Browse for Photo");
+        itemRarityLabel = new JLabel("Rarity");
+        for(int i = 0; i < 5; i++){
+           //starRatingsButtons[i] = new JButton("*"); 
+        }
+
+        imageLabel = new JLabel(itemImage);
+        imagePanel.add(imageLabel);
+        imagePanel.add(itemRarityLabel);
+        for(int i = 0; i < 5; i++){
+            //imagePanel.add(starRatingsButtons[i]);
+        }  
+        
+        saveItemButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                itemNameTextField.setEditable(false);
+                itemDateTextField.setEditable(false);
+                itemValueTextField.setEditable(false);
+                itemDescriptionTextField.setEditable(false);
+                infoPanel.remove(saveItemButton);
+                infoPanel.add(editItemButton);
+                infoPanel.add(deleteItemButton);
+                imagePanel.remove(browsePhotoButton);
+                repaint();
+                revalidate();
+                //TODO save data from fields
+            }
+        });
+        
+        editItemButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                imagePanel.add(browsePhotoButton);
+                infoPanel.remove(editItemButton);
+                infoPanel.remove(deleteItemButton);
+                infoPanel.add(saveItemButton);
+                repaint();
+                revalidate();
+                itemNameTextField.setEditable(true);
+                itemDateTextField.setEditable(true);
+                itemValueTextField.setEditable(true);
+                itemDescriptionTextField.setEditable(true);
             }
             
-            imageLabel = new JLabel(itemImage);
-            imagePanel.add(imageLabel);
-            imagePanel.add(itemRarityLabel);
-            for(int i = 0; i < 5; i++){
-                //imagePanel.add(starRatingsButtons[i]);
-            }
-        }
-        else //Not editable
-        {
-            this.setSize(800,600);
-            this.setTitle("Item Details");
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setLocationRelativeTo(null);
-
-            itemNameLabel = new JLabel("Item Name");
-            itemDateLabel = new JLabel("Date");
-            itemValueLabel = new JLabel("Value");
-            itemDescriptionLabel = new JLabel("Description");
-            itemNameTextField = new JTextField(item.getItemName());
-            itemNameTextField.setEditable(false);
-            itemDateTextField = new JTextField(item.getDateTime().toString());
-            itemDateTextField.setEditable(false);
-            itemValueTextField = new JTextField(item.getValue() + "");
-            itemValueTextField.setEditable(false);
-            itemDescriptionTextField = new JTextField(item.getDescription());
-            itemDescriptionTextField.setEditable(false);
-
-
-
-            infoPanel.add(itemNameLabel);
-            infoPanel.add(itemNameTextField);
-            infoPanel.add(itemDateLabel);
-            infoPanel.add(itemDateTextField);
-            infoPanel.add(itemValueLabel);
-            infoPanel.add(itemValueTextField);
-            infoPanel.add(itemDescriptionLabel);
-            infoPanel.add(itemDescriptionTextField);
-
-            itemImage = item.getImage();
-            browsePhotoButton = new JButton("Browse for Photo");
-            itemRarityLabel = new JLabel("Rarity");
-            for(int i = 0; i < 5; i++){
-               //starRatingsButtons[i] = new JButton("*"); 
-            }
-
-            imageLabel = new JLabel(itemImage);
-            imagePanel.add(imageLabel);
-            imagePanel.add(browsePhotoButton);
-            imagePanel.add(itemRarityLabel);
-            for(int i = 0; i < 5; i++){
-                //imagePanel.add(starRatingsButtons[i]);
-            }
-        }
+        });
         
-        
+        deleteItemButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                infoPanel.removeAll();
+                imagePanel.removeAll();
+                thePanel.add(new JLabel("Item Deleted"));
+                repaint();
+                revalidate();
+                //delete item, update collectionUI
+            }
+        });
         
         thePanel.add(imagePanel);
         thePanel.add(infoPanel);

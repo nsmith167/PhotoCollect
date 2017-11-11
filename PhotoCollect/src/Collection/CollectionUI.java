@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import Item.Item;
 import Item.ItemUI;
+import javax.swing.SwingConstants;
 
 /**
  * The class creates the user interface for a Collection. Included are the following functions:
@@ -34,12 +35,6 @@ public class CollectionUI extends JPanel
     private Collection collection;
     private ItemUI itemDisplay;
     
-    private JButton removeButton, 
-            addButton,
-            editButton,
-            sortButton,
-            statButton;
-    
     private JTextField searchBar;
     
     public CollectionUI(Collection collection)
@@ -48,7 +43,7 @@ public class CollectionUI extends JPanel
         this.collection = collection;
         
         //Panel to store buttons for collection functions
-        ButtonsRowUI btnRowUI = new ButtonsRowUI();
+        ButtonsRowUI btnRowUI = new ButtonsRowUI(this);
         
         //Creates search bar for searching collection contents
         JPanel searchPanel = new JPanel();
@@ -90,6 +85,7 @@ public class CollectionUI extends JPanel
 
         add(btnRowUI);
         add(spacer);
+        add(new JLabel(collection.getTitle(), SwingConstants.CENTER));
         add(spacer);
         add(itemList);
     }
@@ -115,7 +111,7 @@ public class CollectionUI extends JPanel
             }
             if (itemFound)
             {
-                itemDisplay = new ItemUI(itemToDisplay, false);
+                itemDisplay = new ItemUI(itemToDisplay);
                 itemDisplay.setVisible(true);
             }
         }
@@ -130,5 +126,10 @@ public class CollectionUI extends JPanel
         {
             collection.search(searchBar.getText());
         }    
+    }
+    
+    public Collection getCollection()
+    {
+        return this.collection;
     }
 }
