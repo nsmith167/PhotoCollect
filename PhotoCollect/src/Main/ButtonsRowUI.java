@@ -27,8 +27,11 @@ public class ButtonsRowUI extends JPanel{
     private JButton addButton, 
             sortButton, 
             statButton;
+    private CollectionUI collectionUI;
     
-    public ButtonsRowUI() {
+    public ButtonsRowUI(CollectionUI collectionUI) {
+        
+        this.collectionUI = collectionUI; //To get any data necessary about the collection
         
         addButton = new JButton("Add Item");
         
@@ -66,7 +69,7 @@ public class ButtonsRowUI extends JPanel{
             }
             else if (source == statButton)
             {
-                CollectionStatisticsUI statsUI = new CollectionStatisticsUI();
+                CollectionStatisticsUI statsUI = new CollectionStatisticsUI(collectionUI.getCollection());
                 statsUI.setVisible(true);
             }
         }

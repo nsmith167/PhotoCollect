@@ -82,6 +82,17 @@ public class ItemUI extends JFrame{
             //imagePanel.add(starRatingsButtons[i]);
         }
         
+        addItemButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                infoPanel.removeAll();
+                imagePanel.removeAll();
+                thePanel.add(new JLabel("Item Created"));
+                repaint();
+                revalidate();
+                //add item, update collectionUI
+            }
+        });
         
         
         
@@ -159,10 +170,10 @@ public class ItemUI extends JFrame{
                 itemDateTextField.setEditable(false);
                 itemValueTextField.setEditable(false);
                 itemDescriptionTextField.setEditable(false);
-                infoPanel.remove(browsePhotoButton);
                 infoPanel.remove(saveItemButton);
                 infoPanel.add(editItemButton);
                 infoPanel.add(deleteItemButton);
+                imagePanel.remove(browsePhotoButton);
                 repaint();
                 revalidate();
                 //TODO save data from fields
@@ -189,7 +200,12 @@ public class ItemUI extends JFrame{
         deleteItemButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO close window, delete item, update collectionUI
+                infoPanel.removeAll();
+                imagePanel.removeAll();
+                thePanel.add(new JLabel("Item Deleted"));
+                repaint();
+                revalidate();
+                //delete item, update collectionUI
             }
         });
         

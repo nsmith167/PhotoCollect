@@ -5,36 +5,37 @@
  */
 package CollectionStats;
 
+import Collection.Collection;
 import java.awt.*;
+import java.text.SimpleDateFormat;
 import javax.swing.*;
-import java.awt.event.*;
-
-import java.util.Random;
 
 public class CollectionStatisticsUI extends JFrame {
 
-    JLabel ItemNameLanel, DateLabel, ValueLabel, DescriptionLabel;
-    JTextField ItemNameTF, DateTF, ValueTF, DescriptionTF;
+    private JLabel ItemNameLanel, DateLabel, ValueLabel, DescriptionLabel;
+    private JTextField ItemNameTF, DateTF, ValueTF, DescriptionTF;
+    private Collection collection;
 
-
-    public CollectionStatisticsUI() {
-        super();
+    public CollectionStatisticsUI(Collection collection) {
         
-        this.setSize(400,400);
+        this.collection = collection; //To get data about the collection
+        
+        this.setSize(600, 400);
         this.setTitle("Collection Statistics");
         this.setLocationRelativeTo(null);
         
         setLayout(null);
         JLabel TotalItemsLabel = new JLabel("Total Items: ");
-        JLabel TotalItemsLabel2 = new JLabel("N/A");
+        JLabel TotalItemsLabel2 = new JLabel("" + collection.getTotalItems());
         JLabel TotalValueLabel = new JLabel("Total Value: ");
-        JLabel TotalValueLabel2 = new JLabel("N/A");
+        JLabel TotalValueLabel2 = new JLabel("" + collection.getTotalValue());
         JLabel AvgRatingLabel = new JLabel("Average Rating: ");
-        JLabel AvgRatingLabel2 = new JLabel("N/A");
+        JLabel AvgRatingLabel2 = new JLabel("" + collection.getAverageRating());
         JLabel CollStartDateLabel = new JLabel("Value");
-        JLabel CollStartDateLabel2 = new JLabel("N/A");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        JLabel CollStartDateLabel2 = new JLabel("" + sdf.format(collection.getStartDate()));
         JLabel LatestItemLabel = new JLabel("Latest Item: ");
-        JLabel LatestItemLabel2 = new JLabel("N/A");
+        JLabel LatestItemLabel2 = new JLabel("" + collection.getLatestItem());
           
         add(TotalItemsLabel);
         add(TotalItemsLabel2);

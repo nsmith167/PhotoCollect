@@ -14,6 +14,7 @@ import Item.Item;
 import Item.ItemUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
         
 /**
  *
@@ -41,25 +42,20 @@ public class MainUI extends JFrame
         JMenu optionsMenu = new JMenu("Options");
         
         //Create items to appear on menu
-        JMenuItem saveItem = new JMenuItem("Save Collection");
-        JMenuItem newItem = new JMenuItem("New Collection");
-        JMenuItem openItem = new JMenuItem("Open Collection");
-        JMenuItem closeItem = new JMenuItem("Close Collection");
-        JMenuItem importItem = new JMenuItem("Import Collection");
-        JMenuItem exportItem = new JMenuItem("Export Collection");
+        JMenuItem saveCollectionButton = new JMenuItem("Save Collection");
+        JMenuItem newCollectionButton = new JMenuItem("New Collection");
+        JMenuItem openCollectionButton = new JMenuItem("Open Collection");
+        JMenuItem closeCollectionButton = new JMenuItem("Close Collection");
+        JMenuItem importCollectionButton = new JMenuItem("Import Collection");
+        JMenuItem exportCollectionButton = new JMenuItem("Export Collection");
         
         //Add items to menu
-        optionsMenu.add(saveItem);
-        optionsMenu.add(newItem);
-        optionsMenu.add(openItem);
-        optionsMenu.add(closeItem);
-        optionsMenu.add(importItem);
-        optionsMenu.add(exportItem);
-        
-        //Add menu to menu bar
-        menuBar.add(optionsMenu);
-        
-        this.add(menuBar);
+        optionsMenu.add(saveCollectionButton);
+        optionsMenu.add(newCollectionButton);
+        optionsMenu.add(openCollectionButton);
+        optionsMenu.add(closeCollectionButton);
+        optionsMenu.add(importCollectionButton);
+        optionsMenu.add(exportCollectionButton);
         
         ArrayList<JButton> collectionButtons = new ArrayList<>();
         collectionList = new JPanel();
@@ -79,6 +75,83 @@ public class MainUI extends JFrame
         GridLayout grid = new GridLayout(4,1);
         setLayout(grid);
         
+        //Add listeners to menu items
+        saveCollectionButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO persistently save collection
+            } 
+        });
+        
+        newCollectionButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame nameFrame = new JFrame();
+                nameFrame.setSize(300, 100);
+                nameFrame.setTitle("New Collection");
+                nameFrame.setLocationRelativeTo(null);
+                JPanel namePanel = new JPanel();
+                JTextField nameField = new JTextField("Enter collection name");
+                JButton saveButton = new JButton("Save");
+                saveButton.addActionListener(new ActionListener(){
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Collection newCollection = new Collection(nameField.getText());
+                        collections.add(newCollection);
+                        setCurrentCollection(newCollection);
+                        updateCollection(newCollection);
+                        nameFrame.dispatchEvent(new WindowEvent(nameFrame, WindowEvent.WINDOW_CLOSING));
+                    }
+                });
+                
+                namePanel.add(nameField);
+                namePanel.add(saveButton);
+                nameFrame.add(namePanel);
+                nameFrame.setVisible(true);
+                
+            }
+        });
+        
+        openCollectionButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO provide list of collections to choose from
+            } 
+        });
+        
+        closeCollectionButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getContentPane().removeAll();
+                getContentPane().add(menuBar);
+                getContentPane().add(welcomeText);
+                getContentPane().add(spacer);
+                getContentPane().add(spacer);
+                getContentPane().add(collectionList);
+                currentCollection = null;
+                repaint();
+                revalidate();
+            } 
+        });
+        
+        importCollectionButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO open window to select folder to import as new collection
+            } 
+        });
+        
+        exportCollectionButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO open window to allow user to save current collection as a folder
+            } 
+        });
+        
+        //Add menu to menu bar
+        menuBar.add(optionsMenu);
+        
+        getContentPane().add(menuBar);
         getContentPane().add(welcomeText);
         getContentPane().add(spacer);
         getContentPane().add(spacer);
@@ -123,9 +196,8 @@ public class MainUI extends JFrame
      */
     public void updateCollection(Collection collection)
     {
-        getContentPane().remove(spacer);
-        getContentPane().remove(welcomeText);
-        getContentPane().remove(collectionList);
+        getContentPane().removeAll();
+        getContentPane().add(menuBar);
         getContentPane().add(new CollectionUI(collection));
         revalidate();
         repaint();
@@ -137,7 +209,11 @@ public class MainUI extends JFrame
      */
     public void updateItems()
     {
+        getContentPane().removeAll();
+        getContentPane().add(menuBar);
         getContentPane().add(new CollectionUI(currentCollection));
+        revalidate();
+        repaint();
     }
     
     public void setCurrentCollection(Collection collection)

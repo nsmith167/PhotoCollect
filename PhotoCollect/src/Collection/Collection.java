@@ -75,4 +75,24 @@ public class Collection {
     {
         return this.totalItems;
     }
+    
+    public double getTotalValue()
+    {
+        return this.totalValue;
+    }
+    
+    public double getAverageRating()
+    {
+        return this.avgRating;
+    }
+    
+    public Date getStartDate()
+    {
+        return this.collectionStartDate;
+    }
+    
+    public String getLatestItem()
+    {
+        return this.latestItem;
+    }
 }
