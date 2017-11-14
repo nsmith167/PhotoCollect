@@ -4,8 +4,13 @@
  * and open the template in the editor.
  */
 package Item;
+import Collection.Collection;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 /**
  *
@@ -31,8 +36,13 @@ public class ItemUI extends JFrame{
     
     private ImageIcon itemImage;
     private JLabel imageLabel;
+    private File selectedFile;
     
-    public ItemUI(){
+    private Collection collection;
+    
+    public ItemUI(Collection collection){
+        this.collection = collection;
+        
         this.setSize(800,600);
         this.setTitle("New Item");
         this.setLocationRelativeTo(null);
@@ -68,7 +78,29 @@ public class ItemUI extends JFrame{
         infoPanel.add(addItemButton);
         
         itemImage = new ImageIcon();
+        
+        
         browsePhotoButton = new JButton("Browse for Photo");
+        browsePhotoButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                int option = fc.showOpenDialog(ItemUI.this);
+                if (option == JFileChooser.APPROVE_OPTION)
+                {
+                    selectedFile = fc.getSelectedFile();
+                    try {
+                        itemImage.setImage(ImageIO.read(selectedFile));
+                    }
+                    catch (IOException ex) {
+                        System.out.println("Image failed to load");
+                    }
+                }
+                repaint();
+                revalidate();
+            }
+        });
+        
         itemRarityLabel = new JLabel("Rarity");
         for(int i = 0; i < 5; i++){
            //starRatingsButtons[i] = new JButton("*"); 
@@ -76,7 +108,9 @@ public class ItemUI extends JFrame{
         
         imageLabel = new JLabel(itemImage);
         imagePanel.add(imageLabel);
+        
         imagePanel.add(browsePhotoButton);
+        
         imagePanel.add(itemRarityLabel);
         for(int i = 0; i < 5; i++){
             //imagePanel.add(starRatingsButtons[i]);
@@ -85,12 +119,32 @@ public class ItemUI extends JFrame{
         addItemButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Store file to directory
+                File newFile = new File("src/res/" + selectedFile.getName());
+                try
+                {
+                    Files.copy(selectedFile.toPath(), newFile.toPath());
+                }
+                catch (IOException ex)
+                {
+                    System.out.println("file copy failed");
+                }
+                //Create new item
+                Item createdItem = new Item(itemNameTextField.getText());
+                createdItem.setDate(itemDateTextField.getText());
+                createdItem.setValue(Float.parseFloat(itemValueTextField.getText()));
+                createdItem.setDescription(itemDescriptionTextField.getText());
+                createdItem.setImage(itemImage);
+                createdItem.setImagePath(newFile.getPath());
+                
+                collection.addItem(createdItem);
+                
+                //Provide feedback to the user
                 infoPanel.removeAll();
                 imagePanel.removeAll();
                 thePanel.add(new JLabel("Item Created"));
                 repaint();
                 revalidate();
-                //add item, update collectionUI
             }
         });
         
@@ -105,8 +159,11 @@ public class ItemUI extends JFrame{
     
     /**
      * Constructor in the case of a window for viewing or editing
+     * @param item
+     * @param collection
      */
-    public ItemUI(Item item){
+    public ItemUI(Item item, Collection collection){
+        this.collection = collection;
         
         JPanel thePanel = new JPanel();
         thePanel.setLayout(new GridLayout(1,2));
@@ -126,7 +183,7 @@ public class ItemUI extends JFrame{
         itemDescriptionLabel = new JLabel("Description");
         itemNameTextField = new JTextField(item.getItemName());
         itemNameTextField.setEditable(false);
-        itemDateTextField = new JTextField(item.getDateTime().toString());
+        itemDateTextField = new JTextField(item.getDate().toString());
         itemDateTextField.setEditable(false);
         itemValueTextField = new JTextField(item.getValue() + "");
         itemValueTextField.setEditable(false);
@@ -151,6 +208,26 @@ public class ItemUI extends JFrame{
 
         itemImage = item.getImage();
         browsePhotoButton = new JButton("Browse for Photo");
+        browsePhotoButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                int option = fc.showOpenDialog(ItemUI.this);
+                if (option == JFileChooser.APPROVE_OPTION)
+                {
+                    selectedFile = fc.getSelectedFile();
+                    try {
+                        itemImage.setImage(ImageIO.read(selectedFile));
+                    }
+                    catch (IOException ex) {
+                        System.out.println("Image failed to load");
+                    }
+                }
+                repaint();
+                revalidate();
+            }
+        });
+        
         itemRarityLabel = new JLabel("Rarity");
         for(int i = 0; i < 5; i++){
            //starRatingsButtons[i] = new JButton("*"); 
@@ -170,13 +247,35 @@ public class ItemUI extends JFrame{
                 itemDateTextField.setEditable(false);
                 itemValueTextField.setEditable(false);
                 itemDescriptionTextField.setEditable(false);
+                
+                //Update item
+                item.setItemName(itemNameTextField.getText());
+                item.setDate(itemDateTextField.getText());
+                item.setValue(Float.parseFloat(itemValueTextField.getText()));
+                item.setDescription(itemDescriptionTextField.getText());
+                item.setImage(itemImage);
+                if (selectedFile != null)
+                {
+                    //Store file to directory
+                    File newFile = new File("src/res/" + selectedFile.getName());
+                    try
+                    {
+                        Files.copy(selectedFile.toPath(), newFile.toPath());
+                    }
+                    catch (IOException ex)
+                    {
+                        System.out.println("file copy failed");
+                    }
+                    
+                    item.setImagePath(newFile.getPath());
+                }
+                
                 infoPanel.remove(saveItemButton);
                 infoPanel.add(editItemButton);
                 infoPanel.add(deleteItemButton);
                 imagePanel.remove(browsePhotoButton);
                 repaint();
                 revalidate();
-                //TODO save data from fields
             }
         });
         
@@ -200,12 +299,12 @@ public class ItemUI extends JFrame{
         deleteItemButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                collection.removeItem(item);
                 infoPanel.removeAll();
                 imagePanel.removeAll();
                 thePanel.add(new JLabel("Item Deleted"));
                 repaint();
                 revalidate();
-                //delete item, update collectionUI
             }
         });
         

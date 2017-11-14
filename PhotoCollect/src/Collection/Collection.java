@@ -34,7 +34,7 @@ public class Collection {
         totalItems++;
         totalValue += item.getValue();
         avgRating = totalValue/totalItems;
-        this.latestItem = item.getItemName();
+        latestItem = item.getItemName();
     }
     
     public void removeItem(Item item)
@@ -42,8 +42,19 @@ public class Collection {
         items.remove(item);
         totalItems--;
         totalValue -= item.getValue();
-        avgRating = totalValue/totalItems;
-        this.latestItem = items.get(items.size() - 1).getItemName();
+        
+        if (totalItems == 0)
+        {
+            avgRating = 0;
+            latestItem = "";
+        }
+        else 
+        {
+            avgRating = totalValue/totalItems;
+            latestItem = items.get(items.size() - 1).getItemName();
+        }
+        
+        
     }
     
     public void sort()

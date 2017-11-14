@@ -105,7 +105,7 @@ public class CollectionUI extends JPanel
             }
             if (itemFound)
             {
-                itemDisplay = new ItemUI(itemToDisplay);
+                itemDisplay = new ItemUI(itemToDisplay, collection);
                 itemDisplay.setVisible(true);
             }
         }

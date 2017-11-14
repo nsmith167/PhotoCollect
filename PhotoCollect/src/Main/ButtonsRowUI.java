@@ -39,6 +39,8 @@ public class ButtonsRowUI extends JPanel{
         
         statButton = new JButton ("VIew Statistics");
         
+        
+        
         add(addButton);
         add(sortButton);
         add(statButton);
@@ -60,7 +62,7 @@ public class ButtonsRowUI extends JPanel{
             if (source == addButton)
             {
                 System.out.println("Add Button pressed");
-                ItemUI aUI = new ItemUI(); 
+                ItemUI aUI = new ItemUI(collectionUI.getCollection()); 
                 aUI.setVisible(true);
             }
             else if (source == sortButton)
