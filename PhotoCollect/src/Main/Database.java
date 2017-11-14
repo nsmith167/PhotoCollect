@@ -20,7 +20,10 @@ public class Database {
         try{
             Connection conn = null;
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/PhotoCollectDB","root", "secure101");
+            String host = "jdbc:mysql://127.0.0.1:3306/photo_collect";
+            String user = "root";
+            String pass = "Secure101";
+            conn = DriverManager.getConnection(host, user, pass);
             JOptionPane.showMessageDialog(null, "Connection Established");
             return conn;
         }catch(Exception e){
