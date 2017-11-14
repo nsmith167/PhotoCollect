@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 /**
@@ -118,13 +119,23 @@ public class ItemUI extends JFrame{
         addItemButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                //Store file to directory
+                File newFile = new File("src/res/" + selectedFile.getName());
+                try
+                {
+                    Files.copy(selectedFile.toPath(), newFile.toPath());
+                }
+                catch (IOException ex)
+                {
+                    System.out.println("file copy failed");
+                }
                 //Create new item
                 Item createdItem = new Item(itemNameTextField.getText());
                 createdItem.setDate(itemDateTextField.getText());
                 createdItem.setValue(Float.parseFloat(itemValueTextField.getText()));
                 createdItem.setDescription(itemDescriptionTextField.getText());
                 createdItem.setImage(itemImage);
-                createdItem.setImagePath(selectedFile.getPath());
+                createdItem.setImagePath(newFile.getPath());
                 
                 collection.addItem(createdItem);
                 
@@ -148,6 +159,8 @@ public class ItemUI extends JFrame{
     
     /**
      * Constructor in the case of a window for viewing or editing
+     * @param item
+     * @param collection
      */
     public ItemUI(Item item, Collection collection){
         this.collection = collection;
@@ -243,7 +256,18 @@ public class ItemUI extends JFrame{
                 item.setImage(itemImage);
                 if (selectedFile != null)
                 {
-                    item.setImagePath(selectedFile.getPath());
+                    //Store file to directory
+                    File newFile = new File("src/res/" + selectedFile.getName());
+                    try
+                    {
+                        Files.copy(selectedFile.toPath(), newFile.toPath());
+                    }
+                    catch (IOException ex)
+                    {
+                        System.out.println("file copy failed");
+                    }
+                    
+                    item.setImagePath(newFile.getPath());
                 }
                 
                 infoPanel.remove(saveItemButton);
