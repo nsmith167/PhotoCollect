@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import Item.Item;
 import Item.ItemUI;
+import java.awt.Dimension;
 import javax.swing.SwingConstants;
 
 /**
@@ -48,25 +49,19 @@ public class CollectionUI extends JPanel
         //Creates search bar for searching collection contents
         JPanel searchPanel = new JPanel();
         searchBar = new JTextField("Search");
+        searchBar.setPreferredSize(new Dimension(250, 25));
         JButton searchButton = new JButton("Search");
         searchButton.addActionListener(new SearchListener());
-        GridLayout searchLayout = new GridLayout(1,2);
-        searchPanel.setLayout(searchLayout);
         searchPanel.add(searchBar);
         searchPanel.add(searchButton);
         
-        //Create space in layout
-        JLabel spacer = new JLabel();
-        
         //List for storing the collection contents
         JPanel itemList = new JPanel();
+        GridLayout itemGrid = new GridLayout();
+        itemList.setLayout(itemGrid);
         
         //Each item will be represented as a button
         ArrayList<JButton> itemButtons = new ArrayList<>();
-
-        GridLayout itemGrid = new GridLayout(2,5);
-        itemList.setLayout(itemGrid);
-        
         
         /**
          * Add a button to the UI for each item in the collection
@@ -80,13 +75,12 @@ public class CollectionUI extends JPanel
             itemList.add(itemButtons.get(i));
         }
         
-        GridLayout grid = new GridLayout(4,1);
+        GridLayout grid = new GridLayout(6, 1);
         setLayout(grid);
 
         add(btnRowUI);
-        add(spacer);
+        add(searchPanel);
         add(new JLabel(collection.getTitle(), SwingConstants.CENTER));
-        add(spacer);
         add(itemList);
     }
     

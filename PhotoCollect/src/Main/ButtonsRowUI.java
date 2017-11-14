@@ -35,7 +35,7 @@ public class ButtonsRowUI extends JPanel{
         
         addButton = new JButton("Add Item");
         
-        sortButton = new JButton("Sort Button");
+        sortButton = new JButton("Sort Collection");
         
         statButton = new JButton ("VIew Statistics");
         

@@ -22,7 +22,6 @@ import java.awt.event.WindowEvent;
  */
 public class MainUI extends JFrame 
 {
-    
     private ArrayList<Collection> collections;
     private Collection currentCollection;
     private JLabel welcomeText;
@@ -33,6 +32,7 @@ public class MainUI extends JFrame
     MainUI (ArrayList<Collection> collections) 
     {
         this.collections = collections;
+
         welcomeText = new JLabel("Welcome to Photo Collect!", SwingConstants.CENTER);
         
         //Create menu bar
@@ -57,23 +57,21 @@ public class MainUI extends JFrame
         optionsMenu.add(importCollectionButton);
         optionsMenu.add(exportCollectionButton);
         
+        //Buttons to represent collections saved
         ArrayList<JButton> collectionButtons = new ArrayList<>();
         collectionList = new JPanel();
         
+        //Grid to display collection buttons
         GridLayout collectionsGrid = new GridLayout(2,5);
         collectionList.setLayout(collectionsGrid);
         
+        //Create buttons and add to panel
         for (int i = 0; i < collections.size(); i++) 
         {
             collectionButtons.add(new JButton(collections.get(i).getTitle()));
             collectionButtons.get(i).addActionListener(new CollectionListener());
             collectionList.add(collectionButtons.get(i));
         }
-        
-        spacer = new JLabel();
-        
-        GridLayout grid = new GridLayout(4,1);
-        setLayout(grid);
         
         //Add listeners to menu items
         saveCollectionButton.addActionListener(new ActionListener(){
@@ -123,11 +121,9 @@ public class MainUI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) {
                 getContentPane().removeAll();
-                getContentPane().add(menuBar);
-                getContentPane().add(welcomeText);
-                getContentPane().add(spacer);
-                getContentPane().add(spacer);
-                getContentPane().add(collectionList);
+                getContentPane().add(menuBar, BorderLayout.NORTH);
+                getContentPane().add(welcomeText, BorderLayout.CENTER);
+                getContentPane().add(collectionList, BorderLayout.SOUTH);
                 currentCollection = null;
                 repaint();
                 revalidate();
@@ -151,15 +147,16 @@ public class MainUI extends JFrame
         //Add menu to menu bar
         menuBar.add(optionsMenu);
         
-        getContentPane().add(menuBar);
-        getContentPane().add(welcomeText);
-        getContentPane().add(spacer);
-        getContentPane().add(spacer);
-        getContentPane().add(collectionList);
+        BorderLayout layout = new BorderLayout();
+        setLayout(layout);
+        
+        getContentPane().add(menuBar, BorderLayout.NORTH);
+        getContentPane().add(welcomeText, BorderLayout.CENTER);
+        getContentPane().add(collectionList, BorderLayout.SOUTH);
         
         
         
-        setSize(600,500);
+        setSize(750,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -197,8 +194,8 @@ public class MainUI extends JFrame
     public void updateCollection(Collection collection)
     {
         getContentPane().removeAll();
-        getContentPane().add(menuBar);
-        getContentPane().add(new CollectionUI(collection));
+        getContentPane().add(menuBar, BorderLayout.NORTH);
+        getContentPane().add(new CollectionUI(collection), BorderLayout.CENTER);
         revalidate();
         repaint();
     }
