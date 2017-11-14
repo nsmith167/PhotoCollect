@@ -11,8 +11,9 @@ public class Item {
     private String itemName;
     private String description;
     private float value;
-    private Date dateTime;
+    private String date;
     private String tag;
+    private String imagePath;
     private ImageIcon image;
     
     public Item(String itemName)
@@ -20,9 +21,10 @@ public class Item {
         this.itemName = itemName;
         this.description = "";
         this.value = 0;
-        this.dateTime = new Date();
+        this.date = "";
         this.tag = "";
-        this.image = new ImageIcon("");
+        this.imagePath = "";
+        this.image = new ImageIcon(imagePath);
     }
 
     public String getItemName() {
@@ -49,12 +51,12 @@ public class Item {
         this.value = value;
     }
 
-    public Date getDateTime() {
-        return dateTime;
+    public String getDate() {
+        return date;
     }
 
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getTag() {
@@ -71,6 +73,16 @@ public class Item {
 
     public void setImage(ImageIcon image) {
         this.image = image;
+    }
+    
+    public String getImagePath()
+    {
+        return this.imagePath;
+    }
+    
+    public void setImagePath(String imagePath)
+    {
+        this.imagePath = imagePath;
     }
     
     
