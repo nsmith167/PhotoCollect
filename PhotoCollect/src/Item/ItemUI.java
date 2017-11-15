@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Item;
+
 import Collection.Collection;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,11 +13,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 /**
  *
  * @author ajr5723
  */
-public class ItemUI extends JFrame{
+public class ItemUI extends JFrame {
+
+    private JPanel thePanel;
+    private JPanel imagePanel;
+    private JPanel imageInfoPanel;
+    private JPanel ratingPanel;
+    private JPanel infoPanel;
+
     private JLabel itemNameLabel;
     private JLabel itemDateLabel;
     private JLabel itemValueLabel;
@@ -26,35 +35,49 @@ public class ItemUI extends JFrame{
     private JTextField itemDateTextField;
     private JTextField itemValueTextField;
     private JTextField itemDescriptionTextField;
-    
+
     private JButton addItemButton;
     private JButton browsePhotoButton;
     private JButton editItemButton;
     private JButton deleteItemButton;
     private JButton saveItemButton;
-    private JButton [] starRatingsButtons;
-    
+    private JButton ratingButton1;
+    private JButton ratingButton2;
+    private JButton ratingButton3;
+    private JButton ratingButton4;
+    private JButton ratingButton5;
+
     private ImageIcon itemImage;
     private JLabel imageLabel;
     private File selectedFile;
-    
+
     private Collection collection;
-    
-    public ItemUI(Collection collection){
+    private int itemRating;
+
+    public ItemUI(Collection collection) {
         this.collection = collection;
-        
-        this.setSize(800,600);
+
+        this.setSize(800, 600);
         this.setTitle("New Item");
         this.setLocationRelativeTo(null);
-        
-        JPanel thePanel = new JPanel();
-        thePanel.setLayout(new GridLayout(1,2));
-        
-        JPanel imagePanel = new JPanel();
-        imagePanel.setLayout(new GridLayout(3,1));
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(10,1));
-        
+
+        itemRating = 5;
+        thePanel = new JPanel();
+        thePanel.setLayout(new GridLayout(1, 2));
+        imagePanel = new JPanel();
+        imagePanel.setLayout(new GridLayout(2, 1));
+        imageInfoPanel = new JPanel();
+        imageInfoPanel.setLayout(new GridLayout(4, 1));
+        ratingPanel = new JPanel();
+        ratingPanel.setLayout(new GridLayout(1, 6));
+        infoPanel = new JPanel();
+        infoPanel.setLayout(new GridLayout(10, 1));
+        ratingButton1 = new JButton("1");
+        ratingButton2 = new JButton("2");
+        ratingButton3 = new JButton("3");
+        ratingButton4 = new JButton("4");
+        ratingButton5 = new JButton("5");
+
         itemNameLabel = new JLabel("Item Name");
         itemDateLabel = new JLabel("Date");
         itemValueLabel = new JLabel("Value");
@@ -64,9 +87,8 @@ public class ItemUI extends JFrame{
         itemValueTextField = new JTextField();
         itemDescriptionTextField = new JTextField();
         addItemButton = new JButton("Add Item");
-        
-        
-        
+
+        //Add components to the info panel
         infoPanel.add(itemNameLabel);
         infoPanel.add(itemNameTextField);
         infoPanel.add(itemDateLabel);
@@ -76,23 +98,18 @@ public class ItemUI extends JFrame{
         infoPanel.add(itemDescriptionLabel);
         infoPanel.add(itemDescriptionTextField);
         infoPanel.add(addItemButton);
-        
-        itemImage = new ImageIcon();
-        
-        
+
         browsePhotoButton = new JButton("Browse for Photo");
-        browsePhotoButton.addActionListener(new ActionListener(){
+        browsePhotoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
                 int option = fc.showOpenDialog(ItemUI.this);
-                if (option == JFileChooser.APPROVE_OPTION)
-                {
+                if (option == JFileChooser.APPROVE_OPTION) {
                     selectedFile = fc.getSelectedFile();
                     try {
                         itemImage.setImage(ImageIO.read(selectedFile));
-                    }
-                    catch (IOException ex) {
+                    } catch (IOException ex) {
                         System.out.println("Image failed to load");
                     }
                 }
@@ -100,33 +117,35 @@ public class ItemUI extends JFrame{
                 revalidate();
             }
         });
-        
+
         itemRarityLabel = new JLabel("Rarity");
-        for(int i = 0; i < 5; i++){
-           //starRatingsButtons[i] = new JButton("*"); 
-        }
-        
+        ratingPanel.add(itemRarityLabel);
+        ratingPanel.add(ratingButton1);
+        ratingPanel.add(ratingButton2);
+        ratingPanel.add(ratingButton3);
+        ratingPanel.add(ratingButton4);
+        ratingPanel.add(ratingButton5);
+        itemImage = new ImageIcon("empty_image.jpg");
         imageLabel = new JLabel(itemImage);
         imagePanel.add(imageLabel);
-        
-        imagePanel.add(browsePhotoButton);
-        
-        imagePanel.add(itemRarityLabel);
-        for(int i = 0; i < 5; i++){
-            //imagePanel.add(starRatingsButtons[i]);
-        }
-        
-        addItemButton.addActionListener(new ActionListener(){
+
+        imageInfoPanel.add(browsePhotoButton);
+        imageInfoPanel.add(ratingPanel);
+        imagePanel.add(imageLabel);
+        imagePanel.add(imageInfoPanel);
+
+        thePanel.add(imagePanel);
+        thePanel.add(infoPanel);
+        this.add(thePanel);
+
+        addItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Store file to directory
                 File newFile = new File("src/res/" + selectedFile.getName());
-                try
-                {
+                try {
                     Files.copy(selectedFile.toPath(), newFile.toPath());
-                }
-                catch (IOException ex)
-                {
+                } catch (IOException ex) {
                     System.out.println("file copy failed");
                 }
                 //Create new item
@@ -136,9 +155,10 @@ public class ItemUI extends JFrame{
                 createdItem.setDescription(itemDescriptionTextField.getText());
                 createdItem.setImage(itemImage);
                 createdItem.setImagePath(newFile.getPath());
-                
+                createdItem.setRating(itemRating);
+
                 collection.addItem(createdItem);
-                
+
                 //Provide feedback to the user
                 infoPanel.removeAll();
                 imagePanel.removeAll();
@@ -147,33 +167,63 @@ public class ItemUI extends JFrame{
                 revalidate();
             }
         });
-        
-        
-        
-        thePanel.add(imagePanel);
-        thePanel.add(infoPanel);
-        this.add(thePanel);
-        
-        
+
+        ratingButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 1;
+            }
+        });
+        ratingButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 2;
+            }
+        });
+        ratingButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 3;
+            }
+        });
+        ratingButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 5;
+            }
+        });
+        ratingButton5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 5;
+            }
+        });
+
     }
-    
+
     /**
      * Constructor in the case of a window for viewing or editing
+     *
      * @param item
      * @param collection
      */
-    public ItemUI(Item item, Collection collection){
+    public ItemUI(Item item, Collection collection) {
         this.collection = collection;
-        
-        JPanel thePanel = new JPanel();
-        thePanel.setLayout(new GridLayout(1,2));
+        itemRating = item.getRating();
+        System.out.println(itemRating);
 
-        JPanel imagePanel = new JPanel();
-        imagePanel.setLayout(new GridLayout(3,1));
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(10,1));
-            
-        this.setSize(800,600);
+        thePanel = new JPanel();
+        thePanel.setLayout(new GridLayout(1, 2));
+        imagePanel = new JPanel();
+        imagePanel.setLayout(new GridLayout(2, 1));
+        imageInfoPanel = new JPanel();
+        imageInfoPanel.setLayout(new GridLayout(4, 1));
+        ratingPanel = new JPanel();
+        ratingPanel.setLayout(new GridLayout(1, 6));
+        infoPanel = new JPanel();
+        infoPanel.setLayout(new GridLayout(10, 1));
+
+        this.setSize(800, 600);
         this.setTitle("Item Details");
         this.setLocationRelativeTo(null);
 
@@ -193,7 +243,11 @@ public class ItemUI extends JFrame{
         deleteItemButton = new JButton("Delete");
         saveItemButton = new JButton("Save");
 
-
+        ratingButton1 = new JButton("1");
+        ratingButton2 = new JButton("2");
+        ratingButton3 = new JButton("3");
+        ratingButton4 = new JButton("4");
+        ratingButton5 = new JButton("5");
 
         infoPanel.add(itemNameLabel);
         infoPanel.add(itemNameTextField);
@@ -208,18 +262,16 @@ public class ItemUI extends JFrame{
 
         itemImage = item.getImage();
         browsePhotoButton = new JButton("Browse for Photo");
-        browsePhotoButton.addActionListener(new ActionListener(){
+        browsePhotoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
                 int option = fc.showOpenDialog(ItemUI.this);
-                if (option == JFileChooser.APPROVE_OPTION)
-                {
+                if (option == JFileChooser.APPROVE_OPTION) {
                     selectedFile = fc.getSelectedFile();
                     try {
                         itemImage.setImage(ImageIO.read(selectedFile));
-                    }
-                    catch (IOException ex) {
+                    } catch (IOException ex) {
                         System.out.println("Image failed to load");
                     }
                 }
@@ -227,62 +279,158 @@ public class ItemUI extends JFrame{
                 revalidate();
             }
         });
-        
+
         itemRarityLabel = new JLabel("Rarity");
-        for(int i = 0; i < 5; i++){
-           //starRatingsButtons[i] = new JButton("*"); 
+        ratingPanel.add(itemRarityLabel);
+        switch (item.getRating()) {
+            case 1:
+                ratingPanel.add(ratingButton1);
+                ratingPanel.remove(ratingButton2);
+                ratingPanel.remove(ratingButton3);
+                ratingPanel.remove(ratingButton4);
+                ratingPanel.remove(ratingButton5);
+                repaint();
+                revalidate();
+                break;
+            case 2:
+                ratingPanel.add(ratingButton1);
+                ratingPanel.add(ratingButton2);
+                ratingPanel.remove(ratingButton3);
+                ratingPanel.remove(ratingButton4);
+                ratingPanel.remove(ratingButton5);
+                repaint();
+                revalidate();
+                break;
+            case 3:
+                ratingPanel.add(ratingButton1);
+                ratingPanel.add(ratingButton2);
+                ratingPanel.add(ratingButton3);
+                ratingPanel.remove(ratingButton4);
+                ratingPanel.remove(ratingButton5);
+                repaint();
+                revalidate();
+                break;
+            case 4:
+                ratingPanel.add(ratingButton1);
+                ratingPanel.add(ratingButton2);
+                ratingPanel.add(ratingButton3);
+                ratingPanel.add(ratingButton4);
+                ratingPanel.remove(ratingButton5);
+                repaint();
+                revalidate();
+                break;
+            case 5:
+                ratingPanel.add(ratingButton1);
+                ratingPanel.add(ratingButton2);
+                ratingPanel.add(ratingButton3);
+                ratingPanel.add(ratingButton4);
+                ratingPanel.add(ratingButton5);
+                repaint();
+                revalidate();
+                break;
         }
 
         imageLabel = new JLabel(itemImage);
         imagePanel.add(imageLabel);
-        imagePanel.add(itemRarityLabel);
-        for(int i = 0; i < 5; i++){
+        imageInfoPanel.add(ratingPanel);
+        imagePanel.add(imageInfoPanel);
+        for (int i = 0; i < 5; i++) {
             //imagePanel.add(starRatingsButtons[i]);
-        }  
-        
-        saveItemButton.addActionListener(new ActionListener(){
+        }
+
+        saveItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 itemNameTextField.setEditable(false);
                 itemDateTextField.setEditable(false);
                 itemValueTextField.setEditable(false);
                 itemDescriptionTextField.setEditable(false);
-                
+
                 //Update item
                 item.setItemName(itemNameTextField.getText());
                 item.setDate(itemDateTextField.getText());
                 item.setValue(Float.parseFloat(itemValueTextField.getText()));
                 item.setDescription(itemDescriptionTextField.getText());
                 item.setImage(itemImage);
-                if (selectedFile != null)
-                {
+                item.setRating(itemRating);
+                switch (itemRating) {
+                    case 1:
+                        ratingPanel.add(ratingButton1);
+                        ratingPanel.remove(ratingButton2);
+                        ratingPanel.remove(ratingButton3);
+                        ratingPanel.remove(ratingButton4);
+                        ratingPanel.remove(ratingButton5);
+                        repaint();
+                        revalidate();
+                        break;
+                    case 2:
+                        ratingPanel.add(ratingButton1);
+                        ratingPanel.add(ratingButton2);
+                        ratingPanel.remove(ratingButton3);
+                        ratingPanel.remove(ratingButton4);
+                        ratingPanel.remove(ratingButton5);
+                        repaint();
+                        revalidate();
+                        break;
+                    case 3:
+                        ratingPanel.add(ratingButton1);
+                        ratingPanel.add(ratingButton2);
+                        ratingPanel.add(ratingButton3);
+                        ratingPanel.remove(ratingButton4);
+                        ratingPanel.remove(ratingButton5);
+                        repaint();
+                        revalidate();
+                        break;
+                    case 4:
+                        ratingPanel.add(ratingButton1);
+                        ratingPanel.add(ratingButton2);
+                        ratingPanel.add(ratingButton3);
+                        ratingPanel.add(ratingButton4);
+                        ratingPanel.remove(ratingButton5);
+                        repaint();
+                        revalidate();
+                        break;
+                    case 5:
+                        ratingPanel.add(ratingButton1);
+                        ratingPanel.add(ratingButton2);
+                        ratingPanel.add(ratingButton3);
+                        ratingPanel.add(ratingButton4);
+                        ratingPanel.add(ratingButton5);
+                        repaint();
+                        revalidate();
+                        break;
+                }
+                if (selectedFile != null) {
                     //Store file to directory
                     File newFile = new File("src/res/" + selectedFile.getName());
-                    try
-                    {
+                    try {
                         Files.copy(selectedFile.toPath(), newFile.toPath());
-                    }
-                    catch (IOException ex)
-                    {
+                    } catch (IOException ex) {
                         System.out.println("file copy failed");
                     }
-                    
+
                     item.setImagePath(newFile.getPath());
                 }
-                
+
                 infoPanel.remove(saveItemButton);
                 infoPanel.add(editItemButton);
                 infoPanel.add(deleteItemButton);
                 imagePanel.remove(browsePhotoButton);
+
                 repaint();
                 revalidate();
             }
         });
-        
-        editItemButton.addActionListener(new ActionListener(){
+
+        editItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                imagePanel.add(browsePhotoButton);
+                imageInfoPanel.add(browsePhotoButton);
+                ratingPanel.add(ratingButton1);
+                ratingPanel.add(ratingButton2);
+                ratingPanel.add(ratingButton3);
+                ratingPanel.add(ratingButton4);
+                ratingPanel.add(ratingButton5);
                 infoPanel.remove(editItemButton);
                 infoPanel.remove(deleteItemButton);
                 infoPanel.add(saveItemButton);
@@ -293,10 +441,10 @@ public class ItemUI extends JFrame{
                 itemValueTextField.setEditable(true);
                 itemDescriptionTextField.setEditable(true);
             }
-            
+
         });
-        
-        deleteItemButton.addActionListener(new ActionListener(){
+
+        deleteItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 collection.removeItem(item);
@@ -307,11 +455,41 @@ public class ItemUI extends JFrame{
                 revalidate();
             }
         });
-        
+
+        ratingButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 1;
+            }
+        });
+        ratingButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 2;
+            }
+        });
+        ratingButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 3;
+            }
+        });
+        ratingButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 5;
+            }
+        });
+        ratingButton5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                itemRating = 5;
+            }
+        });
+
         thePanel.add(imagePanel);
         thePanel.add(infoPanel);
         this.add(thePanel);
-        
-        
+
     }
 }
