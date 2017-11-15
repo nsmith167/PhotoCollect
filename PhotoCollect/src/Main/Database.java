@@ -18,12 +18,9 @@ import javax.swing.JOptionPane;
 public class Database {
     public static Connection connectDB(){
         try{
-            Connection conn = null;
-            Class.forName("com.mysql.jdbc.Driver");
-            String host = "jdbc:mysql://127.0.0.1:3306/photo_collect";
-            String user = "root";
-            String pass = "Secure101";
-            conn = DriverManager.getConnection(host, user, pass);
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String connectionString = "jdbc:sqlserver://nsmith.database.windows.net:1433;database=photocollect;user=nsmith167@nsmith;password=IST361photocollect;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+            Connection conn = DriverManager.getConnection(connectionString);
             JOptionPane.showMessageDialog(null, "Connection Established");
             return conn;
         }catch(Exception e){

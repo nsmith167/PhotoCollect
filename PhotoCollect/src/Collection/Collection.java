@@ -1,7 +1,6 @@
 package Collection;
 
 import java.util.ArrayList;
-import java.util.Date;
 import Item.Item;
 
 /**
@@ -15,13 +14,13 @@ public class Collection {
     private int totalItems;
     private int totalValue;
     private double avgRating;
-    private Date collectionStartDate;
+    private String collectionStartDate;
     private String latestItem;
     
     public Collection(String title)
     {
         this.title = title;
-        this.collectionStartDate = new Date();
+        this.collectionStartDate = "";
         this.totalItems = 0;
         this.totalValue = 0;
         this.avgRating = 0;
@@ -97,7 +96,7 @@ public class Collection {
         return this.avgRating;
     }
     
-    public Date getStartDate()
+    public String getStartDate()
     {
         return this.collectionStartDate;
     }

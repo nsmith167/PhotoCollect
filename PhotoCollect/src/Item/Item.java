@@ -1,6 +1,5 @@
 package Item;
 
-import java.util.Date;
 import javax.swing.ImageIcon;
 
 /**
@@ -12,7 +11,6 @@ public class Item {
     private String description;
     private float value;
     private String date;
-    private String tag;
     private String imagePath;
     private ImageIcon image;
     
@@ -22,7 +20,6 @@ public class Item {
         this.description = "";
         this.value = 0;
         this.date = "";
-        this.tag = "";
         this.imagePath = "";
         this.image = new ImageIcon(imagePath);
     }
@@ -57,14 +54,6 @@ public class Item {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
     }
 
     public ImageIcon getImage() {
