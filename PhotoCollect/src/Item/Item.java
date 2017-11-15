@@ -57,6 +57,10 @@ public class Item {
     public int getRating(){
         return rating;
     }
+    
+    public int getRating(){
+        return rating;
+    }
 
     public void setDate(String date) {
         this.date = date;
