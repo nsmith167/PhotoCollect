@@ -53,6 +53,7 @@ public class ItemUI extends JFrame {
 
     private Collection collection;
     private int itemRating;
+    private boolean editable;
 
     public ItemUI(Collection collection) {
         this.collection = collection;
@@ -209,6 +210,7 @@ public class ItemUI extends JFrame {
      */
     public ItemUI(Item item, Collection collection) {
         this.collection = collection;
+        editable = false;
         itemRating = item.getRating();
         System.out.println(itemRating);
 
@@ -416,7 +418,7 @@ public class ItemUI extends JFrame {
                 infoPanel.add(editItemButton);
                 infoPanel.add(deleteItemButton);
                 imagePanel.remove(browsePhotoButton);
-
+                editable = false;
                 repaint();
                 revalidate();
             }
@@ -425,6 +427,7 @@ public class ItemUI extends JFrame {
         editItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                editable = true;
                 imageInfoPanel.add(browsePhotoButton);
                 ratingPanel.add(ratingButton1);
                 ratingPanel.add(ratingButton2);
@@ -459,31 +462,41 @@ public class ItemUI extends JFrame {
         ratingButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                itemRating = 1;
+                if (editable) {
+                    itemRating = 1;
+                }
             }
         });
         ratingButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                itemRating = 2;
+                if (editable) {
+                    itemRating = 2;
+                }
             }
         });
         ratingButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                itemRating = 3;
+                if (editable) {
+                    itemRating = 3;
+                }
             }
         });
         ratingButton4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                itemRating = 5;
+                if (editable) {
+                    itemRating = 4;
+                }
             }
         });
         ratingButton5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                itemRating = 5;
+                if (editable) {
+                    itemRating = 5;
+                }
             }
         });
 
