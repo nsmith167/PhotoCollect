@@ -15,6 +15,7 @@ public class Item {
     private String tag;
     private String imagePath;
     private ImageIcon image;
+    private int rating;
     
     public Item(String itemName)
     {
@@ -23,8 +24,9 @@ public class Item {
         this.value = 0;
         this.date = "";
         this.tag = "";
-        this.imagePath = "";
+        this.imagePath = "empty_image.jpg";
         this.image = new ImageIcon(imagePath);
+        this.rating = 3;
     }
 
     public String getItemName() {
@@ -53,6 +55,10 @@ public class Item {
 
     public String getDate() {
         return date;
+    }
+    
+    public int getRating(){
+        return rating;
     }
 
     public void setDate(String date) {
@@ -83,6 +89,10 @@ public class Item {
     public void setImagePath(String imagePath)
     {
         this.imagePath = imagePath;
+    }
+    
+    public void setRating(int newRating){
+        this.rating = rating;
     }
     
     
