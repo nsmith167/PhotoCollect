@@ -23,7 +23,7 @@ public class Item {
         this.date = "";
         this.imagePath = "";
         this.image = new ImageIcon(imagePath);
-        this.rating = 3;
+        this.rating = 0;
     }
 
     public String getItemName() {
@@ -81,7 +81,7 @@ public class Item {
     }
     
     public void setRating(int newRating){
-        this.rating = rating;
+        this.rating = newRating;
     }
     
     

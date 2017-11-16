@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.ListIterator;
 import Collection.Collection;
 import Item.Item;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -23,39 +25,52 @@ public class Controller {
     
     public Controller()
     {
-//        //Connect to database
-//        Database db = new Database();
-//        Connection connection = db.connectDB();
-//        
-//        
-//        try
-//        {
-//            //Create query for getting collections
-//            PreparedStatement collectionQuery = connection.prepareStatement("SELECT * FROM Collections;");
-//            PreparedStatement itemsQuery = connection.prepareStatement("SELECT * FROM Items;");
-//            
-//            //Get result set from query
-//            ResultSet collectionRS = collectionQuery.executeQuery();
-//            ResultSet itemsRS = itemsQuery.executeQuery();
-//            
-//            //Populate collections ArrayList with results
-//            collectionRS.first();
-//            while (!(collectionRS.isAfterLast()))
-//            {
-//                collections.add(new Collection(collectionRS.getString("Name")));
-//                //TODO populate items for each collection
-//            }
-//        }
-//        catch(SQLException e)
-//        {
-//            System.out.println("Database connection failed");
-//        }
+        //Connect to database
+        Database db = new Database();
+        Connection connection = db.connectDB();
         
-        //TEST
-        Collection testCollection = new Collection("Test");
-        Item testItem = new Item("TEST");
-        testCollection.addItem(testItem);
-        collections.add(testCollection);
+        
+        try
+        {
+            //Create query for getting collections
+            PreparedStatement collectionQuery = connection.prepareStatement("SELECT * FROM collections;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+            //Get result set from query
+            ResultSet collectionRS = collectionQuery.executeQuery();
+            
+            //Populate collections ArrayList with results
+            collectionRS.first();
+            int collectionID = 0;
+            while (!(collectionRS.isAfterLast()))
+            {
+                collectionID++;
+                Collection newCollection = new Collection(collectionRS.getString("title"));
+                newCollection.setStartDate(collectionRS.getString("startDate"));
+               //Create query to get items for collection
+                PreparedStatement itemsQuery = connection.prepareStatement("SELECT * FROM items WHERE collection_id = " + collectionID +";", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                ResultSet itemRS = itemsQuery.executeQuery();
+                itemRS.first();
+                while(!(itemRS.isAfterLast()))
+                {
+                    Item newItem = new Item(itemRS.getString("name"));
+                    newItem.setDescription(itemRS.getString("description"));
+                    newItem.setValue(itemRS.getFloat("value"));
+                    newItem.setDate(itemRS.getString("date"));
+                    newItem.setImagePath(itemRS.getString("imagePath"));
+                    ImageIcon itemImage = new ImageIcon(itemRS.getString("imagePath"));
+                    newItem.setImage(itemImage);
+                    newItem.setRating(itemRS.getInt("rating"));
+                    newCollection.addItem(newItem);
+                    itemRS.next();
+                }
+                collections.add(newCollection); 
+                collectionRS.next();
+            }
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e);
+        }
         
         //Initialize UI with collections
         this.mainUI = new MainUI(collections);
@@ -82,9 +97,11 @@ public class Controller {
                 collectionIter.next();
         }
         
-        if(!(collectionIter.hasNext()))
-            //Display error that collection could not be found
+        //Collection not found
+        if((!(collectionIter.hasNext())) && (!(collectionFound)))
+        {
             System.out.println("Collection could not be found");
+        }
     }
     
     /**
@@ -98,25 +115,25 @@ public class Controller {
     }
     
     /**
-     * Display the given item and its details.
-     * @param item 
+     * Export given collection to folder.
+     * @param collection
+     * @param name 
      */
-    public void showItem(Item item)
+    public void exportCollection(Collection collection, String name)
     {
         
     }
     
+    
     /**
-     * Interface for adding a new item to the current collection. To be called by the view.
-     * @param name
-     * @param description
-     * @param value
-     * @param dateTime
-     * @param tag
-     * @param image 
+     * Import selected collection.
+     * @return newCollection
      */
-    public void addItem(String name, String description, float value, Date dateTime, String tag, Image image)
+    public Collection importCollection()
     {
-        currentCollection.addItem(new Item(name));
+        File selectedFile = new File("");
+        Collection newCollection = new Collection(selectedFile.getName());
+        return newCollection;
     }
+
 }

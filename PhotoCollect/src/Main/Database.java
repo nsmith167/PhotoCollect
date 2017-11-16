@@ -21,7 +21,6 @@ public class Database {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String connectionString = "jdbc:sqlserver://nsmith.database.windows.net:1433;database=photocollect;user=nsmith167@nsmith;password=IST361photocollect;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
             Connection conn = DriverManager.getConnection(connectionString);
-            JOptionPane.showMessageDialog(null, "Connection Established");
             return conn;
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);

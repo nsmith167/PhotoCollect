@@ -12,7 +12,8 @@ public class Collection {
     private String title;
     private ArrayList<Item> items = new ArrayList<>();
     private int totalItems;
-    private int totalValue;
+    private float totalValue;
+    private int totalRating;
     private double avgRating;
     private String collectionStartDate;
     private String latestItem;
@@ -23,6 +24,7 @@ public class Collection {
         this.collectionStartDate = "";
         this.totalItems = 0;
         this.totalValue = 0;
+        this.totalRating = 0;
         this.avgRating = 0;
         this.latestItem = "";
     }
@@ -32,7 +34,8 @@ public class Collection {
         items.add(item);
         totalItems++;
         totalValue += item.getValue();
-        avgRating = totalValue/totalItems;
+        totalRating += item.getRating();
+        avgRating = totalRating/totalItems;
         latestItem = item.getItemName();
     }
     
@@ -41,6 +44,7 @@ public class Collection {
         items.remove(item);
         totalItems--;
         totalValue -= item.getValue();
+        totalRating -= item.getRating();
         
         if (totalItems == 0)
         {
@@ -49,7 +53,7 @@ public class Collection {
         }
         else 
         {
-            avgRating = totalValue/totalItems;
+            avgRating = totalRating/totalItems;
             latestItem = items.get(items.size() - 1).getItemName();
         }
         
@@ -86,7 +90,7 @@ public class Collection {
         return this.totalItems;
     }
     
-    public double getTotalValue()
+    public float getTotalValue()
     {
         return this.totalValue;
     }
@@ -99,6 +103,11 @@ public class Collection {
     public String getStartDate()
     {
         return this.collectionStartDate;
+    }
+    
+    public void setStartDate(String date)
+    {
+        this.collectionStartDate = date;
     }
     
     public String getLatestItem()
