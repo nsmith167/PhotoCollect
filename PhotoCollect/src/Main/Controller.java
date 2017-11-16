@@ -37,6 +37,7 @@ public class Controller {
 
             //Get result set from query
             ResultSet collectionRS = collectionQuery.executeQuery();
+            ResultSet itemRS = null;
             
             //Populate collections ArrayList with results
             collectionRS.first();
@@ -46,9 +47,9 @@ public class Controller {
                 collectionID++;
                 Collection newCollection = new Collection(collectionRS.getString("title"));
                 newCollection.setStartDate(collectionRS.getString("startDate"));
-               //Create query to get items for collection
+                //Create query to get items for collection
                 PreparedStatement itemsQuery = connection.prepareStatement("SELECT * FROM items WHERE collection_id = " + collectionID +";", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                ResultSet itemRS = itemsQuery.executeQuery();
+                itemRS = itemsQuery.executeQuery();
                 itemRS.first();
                 while(!(itemRS.isAfterLast()))
                 {
@@ -66,12 +67,15 @@ public class Controller {
                 collections.add(newCollection); 
                 collectionRS.next();
             }
+            
+            collectionRS.close();
+            itemRS.close();
         }
         catch(SQLException e)
         {
             System.out.println(e);
         }
-        
+
         //Initialize UI with collections
         this.mainUI = new MainUI(collections);
     }

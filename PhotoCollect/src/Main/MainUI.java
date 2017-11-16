@@ -23,6 +23,7 @@ import java.awt.event.WindowEvent;
 public class MainUI extends JFrame 
 {
     private ArrayList<Collection> collections;
+    ArrayList<JButton> collectionButtons;
     private Collection currentCollection;
     private JLabel welcomeText;
     private JLabel spacer;
@@ -58,7 +59,7 @@ public class MainUI extends JFrame
         optionsMenu.add(exportCollectionButton);
         
         //Buttons to represent collections saved
-        ArrayList<JButton> collectionButtons = new ArrayList<>();
+        collectionButtons = new ArrayList<>();
         collectionList = new JPanel();
         
         //Grid to display collection buttons
@@ -123,6 +124,8 @@ public class MainUI extends JFrame
                 getContentPane().removeAll();
                 getContentPane().add(menuBar, BorderLayout.NORTH);
                 getContentPane().add(welcomeText, BorderLayout.CENTER);
+                collectionList.removeAll();
+                refreshHome();
                 getContentPane().add(collectionList, BorderLayout.SOUTH);
                 currentCollection = null;
                 repaint();
@@ -195,9 +198,9 @@ public class MainUI extends JFrame
     {
         getContentPane().removeAll();
         getContentPane().add(menuBar, BorderLayout.NORTH);
-        getContentPane().add(new CollectionUI(collection), BorderLayout.CENTER);
-        revalidate();
+        getContentPane().add(new CollectionUI(collection, this), BorderLayout.CENTER);
         repaint();
+        revalidate();
     }
     
     /**
@@ -208,13 +211,26 @@ public class MainUI extends JFrame
     {
         getContentPane().removeAll();
         getContentPane().add(menuBar);
-        getContentPane().add(new CollectionUI(currentCollection));
-        revalidate();
+        getContentPane().add(new CollectionUI(currentCollection, this));
         repaint();
+        revalidate();
     }
     
     public void setCurrentCollection(Collection collection)
     {
         this.currentCollection = collection;
+    }
+    
+    private void refreshHome()
+    {
+        collectionButtons.clear();
+        
+        //Create buttons and add to panel
+        for (int i = 0; i < collections.size(); i++) 
+        {
+            collectionButtons.add(new JButton(collections.get(i).getTitle()));
+            collectionButtons.get(i).addActionListener(new CollectionListener());
+            collectionList.add(collectionButtons.get(i));
+        }
     }
 }
