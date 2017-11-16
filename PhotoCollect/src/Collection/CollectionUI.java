@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import Item.Item;
 import Item.ItemUI;
+import Main.MainUI;
 import com.sun.javafx.css.Rule;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -39,15 +40,19 @@ public class CollectionUI extends JPanel
     private Collection collection;
     private ItemUI itemDisplay;
     
+    private MainUI mainUI;
+    
     private JTextField searchBar;
     private JScrollPane scrollPanel;
-    public CollectionUI(Collection collection)
+    public CollectionUI(Collection collection, MainUI mainUI)
     {   
+        this.mainUI = mainUI;
+        
         //Get data for collection
         this.collection = collection;
         
         //Panel to store buttons for collection functions
-        ButtonsRowUI btnRowUI = new ButtonsRowUI(this);
+        ButtonsRowUI btnRowUI = new ButtonsRowUI(this, mainUI);
         
         //Creates search bar for searching collection contents
         JPanel searchPanel = new JPanel();
@@ -118,7 +123,7 @@ public class CollectionUI extends JPanel
             }
             if (itemFound)
             {
-                itemDisplay = new ItemUI(itemToDisplay, collection);
+                itemDisplay = new ItemUI(itemToDisplay, collection, mainUI);
                 itemDisplay.setVisible(true);
             }
         }
