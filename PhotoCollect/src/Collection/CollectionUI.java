@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 import Item.Item;
 import Item.ItemUI;
 import Main.MainUI;
-import com.sun.javafx.css.Rule;
 import java.awt.Dimension;
 import java.awt.Image;
 import javax.swing.SwingConstants;
@@ -81,7 +80,8 @@ public class CollectionUI extends JPanel
             ImageIcon curImage = collection.getItems().get(i).getImage();
             Image im = curImage.getImage().getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH);
             ImageIcon img = new ImageIcon(im);
-            itemButtons.add(new JButton(collection.getItems().get(i).getItemName(), img));
+            String name = collection.getItems().get(i).getItemName();
+            itemButtons.add(new JButton(name, img));
             itemButtons.get(i).addActionListener(new ItemListener());
             itemList.add(itemButtons.get(i));
         }
@@ -115,7 +115,7 @@ public class CollectionUI extends JPanel
             //Find the item that matches the button pressed
             for(int i = 0; i < collection.getItems().size() && itemFound == false; i++)
             {
-                if (source.getText() == collection.getItems().get(i).getItemName())
+                if (source.getText().equals(collection.getItems().get(i).getItemName()))
                 {
                     itemToDisplay = collection.getItems().get(i);
                     itemFound = true;

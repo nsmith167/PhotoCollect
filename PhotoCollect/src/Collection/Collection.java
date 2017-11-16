@@ -9,6 +9,7 @@ import Item.Item;
  */
 public class Collection {
     
+    private int collectionID;
     private String title;
     private ArrayList<Item> items = new ArrayList<>();
     private int totalItems;
@@ -22,6 +23,7 @@ public class Collection {
     {
         this.title = title;
         this.collectionStartDate = "";
+        this.collectionID = 0;
         this.totalItems = 0;
         this.totalValue = 0;
         this.totalRating = 0;
@@ -113,5 +115,15 @@ public class Collection {
     public String getLatestItem()
     {
         return this.latestItem;
+    }
+    
+    public int getCollectionID()
+    {
+        return this.collectionID;
+    }
+    
+    public void setCollectionID(int id)
+    {
+        this.collectionID = id;
     }
 }

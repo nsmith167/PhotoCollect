@@ -22,12 +22,15 @@ public class Controller {
     private Collection currentCollection;
     private ArrayList<Collection> collections = new ArrayList<>();
     private MainUI mainUI;
+    private Database db;
+    private Connection connection;
+    private int latestID;
     
     public Controller()
     {
         //Connect to database
-        Database db = new Database();
-        Connection connection = db.connectDB();
+        db = new Database();
+        connection = db.connectDB();
         
         
         try
@@ -42,11 +45,21 @@ public class Controller {
             //Populate collections ArrayList with results
             collectionRS.first();
             int collectionID = 0;
+            latestID = 0;
             while (!(collectionRS.isAfterLast()))
             {
-                collectionID++;
                 Collection newCollection = new Collection(collectionRS.getString("title"));
+                collectionID = collectionRS.getInt("collection_id");
+                
+                //Determine what the highest existing collectionID is
+                if(latestID < collectionID)
+                {
+                    latestID = collectionID;
+                }
+                
+                newCollection.setCollectionID(collectionID);
                 newCollection.setStartDate(collectionRS.getString("startDate"));
+               
                 //Create query to get items for collection
                 PreparedStatement itemsQuery = connection.prepareStatement("SELECT * FROM items WHERE collection_id = " + collectionID +";", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 itemRS = itemsQuery.executeQuery();
@@ -70,42 +83,15 @@ public class Controller {
             
             collectionRS.close();
             itemRS.close();
+            connection.close();
         }
         catch(SQLException e)
         {
             System.out.println(e);
         }
-
-        //Initialize UI with collections
-        this.mainUI = new MainUI(collections);
-    }
-    
-    /**
-     * Set current collection based on string parameter.
-     * @param collection 
-     */
-    public void loadCollection(String collection)
-    {
-        boolean collectionFound = false;
-        ListIterator<Collection> collectionIter = collections.listIterator();
-        Collection c = collectionIter.next();
         
-        while(collectionFound == false && collectionIter.hasNext())
-        {
-            if(c.getTitle().equals(collection))
-            {
-                currentCollection = c;
-                collectionFound = true;
-            }
-            else
-                collectionIter.next();
-        }
-        
-        //Collection not found
-        if((!(collectionIter.hasNext())) && (!(collectionFound)))
-        {
-            System.out.println("Collection could not be found");
-        }
+        //Initialize UI 
+        this.mainUI = new MainUI(this);
     }
     
     /**
@@ -113,9 +99,42 @@ public class Controller {
      * @param collection
      * @param name 
      */
-    public void saveCollection(Collection collection, String name)
+    public void saveCollection(Collection collection)
     {
+        //Connect to database
+        db = new Database();
+        connection = db.connectDB();
         
+        try 
+        {
+            //Delete and Insert are used rather than Update to account for our inability to determine which collections are new and which exist in the db already
+            PreparedStatement deleteQuery = connection.prepareStatement("DELETE FROM collections WHERE collection_id = " + collection.getCollectionID() + ";");
+            deleteQuery.execute();
+            
+            PreparedStatement insertQuery = connection.prepareStatement("INSERT INTO dbo.collections VALUES (" + collection.getCollectionID() 
+                    + ",'" + collection.getTitle() + "', " + collection.getTotalItems() + ", " + String.format("%.2f",collection.getTotalValue())
+                    + ", " + collection.getAverageRating() + ", '" + collection.getStartDate() + "', '" + collection.getLatestItem() + "');");
+            insertQuery.execute();
+            
+            //Clear existing items from collection in database
+            PreparedStatement clearItemsQuery = connection.prepareStatement("DELETE FROM items WHERE collection_id = " + collection.getCollectionID() + ";");
+            clearItemsQuery.execute();
+            
+            //Save items in collection
+            PreparedStatement insertItemQuery = null;
+            for (Item item: collection.getItems())
+            {
+                insertItemQuery = connection.prepareStatement("INSERT INTO dbo.items VALUES ('" + item.getItemName() + "','" + item.getDescription()
+                        + "'," + String.format("%.2f",item.getValue()) + ",'" + item.getDate() + "','" + item.getImagePath()
+                        + "'," + collection.getCollectionID() + "," + item.getRating() + ");");
+                insertItemQuery.execute();
+            }
+
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e);
+        }
     }
     
     /**
@@ -137,7 +156,22 @@ public class Controller {
     {
         File selectedFile = new File("");
         Collection newCollection = new Collection(selectedFile.getName());
+        //TODO assign date
+        //TODO assign collection
         return newCollection;
+    }
+    
+    public ArrayList<Collection> getCollections()
+    {
+        return this.collections;
+    }
+    
+    public int getLatestID()
+    {
+        if (this.latestID == 0)
+            return this.latestID;
+        else
+            return this.latestID + 1;
     }
 
 }

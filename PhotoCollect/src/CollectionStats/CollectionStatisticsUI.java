@@ -27,10 +27,18 @@ public class CollectionStatisticsUI extends JFrame {
         JLabel TotalItemsLabel = new JLabel("Total Items: ");
         JLabel TotalItemsLabel2 = new JLabel("" + collection.getTotalItems());
         JLabel TotalValueLabel = new JLabel("Total Value ($): ");
-        JLabel TotalValueLabel2 = new JLabel((Float.toString(collection.getTotalValue())).substring(0, 4));
+        JLabel TotalValueLabel2;
+        if(!(collection.getTotalItems() == 0))
+        {
+            TotalValueLabel2 = new JLabel(String.format("%.2f",collection.getTotalValue()));
+        }
+        else
+        {
+            TotalValueLabel2 = new JLabel("");
+        }
         JLabel AvgRatingLabel = new JLabel("Average Rating: ");
         JLabel AvgRatingLabel2 = new JLabel("" + collection.getAverageRating());
-        JLabel CollStartDateLabel = new JLabel("Value");
+        JLabel CollStartDateLabel = new JLabel("Date: ");
         JLabel CollStartDateLabel2 = new JLabel(collection.getStartDate());
         JLabel LatestItemLabel = new JLabel("Latest Item: ");
         JLabel LatestItemLabel2 = new JLabel(collection.getLatestItem());
