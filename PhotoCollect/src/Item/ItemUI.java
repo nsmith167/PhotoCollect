@@ -6,6 +6,7 @@
 package Item;
 
 import Collection.Collection;
+import Main.MainUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -55,7 +56,7 @@ public class ItemUI extends JFrame {
     private int itemRating;
     private boolean editable;
 
-    public ItemUI(Collection collection) {
+    public ItemUI(Collection collection, MainUI mainUI) {
         this.collection = collection;
 
         this.setSize(800, 600);
@@ -129,7 +130,7 @@ public class ItemUI extends JFrame {
         itemImage = new ImageIcon("empty_image.jpg");
         imageLabel = new JLabel(itemImage);
         imagePanel.add(imageLabel);
-
+        
         imageInfoPanel.add(browsePhotoButton);
         imageInfoPanel.add(ratingPanel);
         imagePanel.add(imageLabel);
@@ -166,6 +167,7 @@ public class ItemUI extends JFrame {
                 thePanel.add(new JLabel("Item Created"));
                 repaint();
                 revalidate();
+                mainUI.updateItems();
             }
         });
 
@@ -208,7 +210,7 @@ public class ItemUI extends JFrame {
      * @param item
      * @param collection
      */
-    public ItemUI(Item item, Collection collection) {
+    public ItemUI(Item item, Collection collection, MainUI mainUI) {
         this.collection = collection;
         editable = false;
         itemRating = item.getRating();
@@ -336,9 +338,6 @@ public class ItemUI extends JFrame {
         imagePanel.add(imageLabel);
         imageInfoPanel.add(ratingPanel);
         imagePanel.add(imageInfoPanel);
-        for (int i = 0; i < 5; i++) {
-            //imagePanel.add(starRatingsButtons[i]);
-        }
 
         saveItemButton.addActionListener(new ActionListener() {
             @Override
@@ -417,10 +416,11 @@ public class ItemUI extends JFrame {
                 infoPanel.remove(saveItemButton);
                 infoPanel.add(editItemButton);
                 infoPanel.add(deleteItemButton);
-                imagePanel.remove(browsePhotoButton);
+                imageInfoPanel.remove(browsePhotoButton);
                 editable = false;
                 repaint();
                 revalidate();
+                mainUI.updateItems();
             }
         });
 
@@ -443,6 +443,7 @@ public class ItemUI extends JFrame {
                 itemDateTextField.setEditable(true);
                 itemValueTextField.setEditable(true);
                 itemDescriptionTextField.setEditable(true);
+                
             }
 
         });
@@ -456,6 +457,7 @@ public class ItemUI extends JFrame {
                 thePanel.add(new JLabel("Item Deleted"));
                 repaint();
                 revalidate();
+                mainUI.updateItems();
             }
         });
 

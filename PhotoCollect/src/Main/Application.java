@@ -1,7 +1,4 @@
 package Main;
-
-import Collection.Collection;
-import Collection.CollectionUI;
 /**
  * Main application class 
  * @author nps5120

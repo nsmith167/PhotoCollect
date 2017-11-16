@@ -10,11 +10,10 @@ import java.util.ArrayList;
 import javax.swing.*;
 import Collection.Collection;
 import Collection.CollectionUI;
-import Item.Item;
-import Item.ItemUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.Calendar;
         
 /**
  *
@@ -23,17 +22,22 @@ import java.awt.event.WindowEvent;
 public class MainUI extends JFrame 
 {
     private ArrayList<Collection> collections;
+    ArrayList<JButton> collectionButtons;
     private Collection currentCollection;
     private JLabel welcomeText;
+    private JLabel loadText;
     private JLabel spacer;
     private JMenuBar menuBar;
     private JPanel collectionList;
+    int latestID;
     
-    MainUI (ArrayList<Collection> collections) 
+    MainUI (Controller controller) 
     {
-        this.collections = collections;
+        this.collections = controller.getCollections();
+        this.latestID = controller.getLatestID();
 
         welcomeText = new JLabel("Welcome to Photo Collect!", SwingConstants.CENTER);
+        loadText = new JLabel("Please select a collection to load:", SwingConstants.CENTER);
         
         //Create menu bar
         menuBar = new JMenuBar();
@@ -58,7 +62,7 @@ public class MainUI extends JFrame
         optionsMenu.add(exportCollectionButton);
         
         //Buttons to represent collections saved
-        ArrayList<JButton> collectionButtons = new ArrayList<>();
+        collectionButtons = new ArrayList<>();
         collectionList = new JPanel();
         
         //Grid to display collection buttons
@@ -73,14 +77,15 @@ public class MainUI extends JFrame
             collectionList.add(collectionButtons.get(i));
         }
         
-        //Add listeners to menu items
+        //Listener for save collection menu item
         saveCollectionButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO persistently save collection
+                controller.saveCollection(currentCollection);
             } 
         });
         
+        //Listener for new collection menu item
         newCollectionButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,6 +100,9 @@ public class MainUI extends JFrame
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Collection newCollection = new Collection(nameField.getText());
+                        newCollection.setCollectionID(latestID);
+                        Calendar now = Calendar.getInstance();
+                        newCollection.setStartDate(now.get((Calendar.MONTH) + 1) + "/" + now.get(Calendar.DAY_OF_MONTH) + "/" + now.get(Calendar.YEAR));
                         collections.add(newCollection);
                         setCurrentCollection(newCollection);
                         updateCollection(newCollection);
@@ -110,19 +118,15 @@ public class MainUI extends JFrame
             }
         });
         
+        //Listener for open collection menu item
         openCollectionButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO provide list of collections to choose from
-            } 
-        });
-        
-        closeCollectionButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 getContentPane().removeAll();
                 getContentPane().add(menuBar, BorderLayout.NORTH);
-                getContentPane().add(welcomeText, BorderLayout.CENTER);
+                getContentPane().add(loadText, BorderLayout.CENTER);
+                collectionList.removeAll();
+                refreshHome();
                 getContentPane().add(collectionList, BorderLayout.SOUTH);
                 currentCollection = null;
                 repaint();
@@ -130,6 +134,23 @@ public class MainUI extends JFrame
             } 
         });
         
+        //Listener for close collection menu item
+        closeCollectionButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getContentPane().removeAll();
+                getContentPane().add(menuBar, BorderLayout.NORTH);
+                getContentPane().add(welcomeText, BorderLayout.CENTER);
+                collectionList.removeAll();
+                refreshHome();
+                getContentPane().add(collectionList, BorderLayout.SOUTH);
+                currentCollection = null;
+                repaint();
+                revalidate();
+            } 
+        });
+        
+        //Listener for import collection menu item
         importCollectionButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -137,6 +158,7 @@ public class MainUI extends JFrame
             } 
         });
         
+        //Listener for export collection menu item
         exportCollectionButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -195,9 +217,9 @@ public class MainUI extends JFrame
     {
         getContentPane().removeAll();
         getContentPane().add(menuBar, BorderLayout.NORTH);
-        getContentPane().add(new CollectionUI(collection), BorderLayout.CENTER);
-        revalidate();
+        getContentPane().add(new CollectionUI(collection, this), BorderLayout.CENTER);
         repaint();
+        revalidate();
     }
     
     /**
@@ -208,13 +230,26 @@ public class MainUI extends JFrame
     {
         getContentPane().removeAll();
         getContentPane().add(menuBar);
-        getContentPane().add(new CollectionUI(currentCollection));
-        revalidate();
+        getContentPane().add(new CollectionUI(currentCollection, this));
         repaint();
+        revalidate();
     }
     
     public void setCurrentCollection(Collection collection)
     {
         this.currentCollection = collection;
+    }
+    
+    private void refreshHome()
+    {
+        collectionButtons.clear();
+        
+        //Create buttons and add to panel
+        for (int i = 0; i < collections.size(); i++) 
+        {
+            collectionButtons.add(new JButton(collections.get(i).getTitle()));
+            collectionButtons.get(i).addActionListener(new CollectionListener());
+            collectionList.add(collectionButtons.get(i));
+        }
     }
 }

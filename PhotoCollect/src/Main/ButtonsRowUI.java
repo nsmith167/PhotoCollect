@@ -28,8 +28,11 @@ public class ButtonsRowUI extends JPanel{
             sortButton, 
             statButton;
     private CollectionUI collectionUI;
+    MainUI mainUI;
     
-    public ButtonsRowUI(CollectionUI collectionUI) {
+    public ButtonsRowUI(CollectionUI collectionUI, MainUI mainUI) {
+        
+        this.mainUI = mainUI;
         
         this.collectionUI = collectionUI; //To get any data necessary about the collection
         
@@ -62,7 +65,7 @@ public class ButtonsRowUI extends JPanel{
             if (source == addButton)
             {
                 System.out.println("Add Button pressed");
-                ItemUI aUI = new ItemUI(collectionUI.getCollection()); 
+                ItemUI aUI = new ItemUI(collectionUI.getCollection(), mainUI); 
                 aUI.setVisible(true);
             }
             else if (source == sortButton)
