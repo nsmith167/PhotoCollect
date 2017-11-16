@@ -7,7 +7,6 @@ package CollectionStats;
 
 import Collection.Collection;
 import java.awt.*;
-import java.text.SimpleDateFormat;
 import javax.swing.*;
 
 public class CollectionStatisticsUI extends JFrame {
@@ -27,15 +26,14 @@ public class CollectionStatisticsUI extends JFrame {
         setLayout(null);
         JLabel TotalItemsLabel = new JLabel("Total Items: ");
         JLabel TotalItemsLabel2 = new JLabel("" + collection.getTotalItems());
-        JLabel TotalValueLabel = new JLabel("Total Value: ");
-        JLabel TotalValueLabel2 = new JLabel("" + collection.getTotalValue());
+        JLabel TotalValueLabel = new JLabel("Total Value ($): ");
+        JLabel TotalValueLabel2 = new JLabel((Float.toString(collection.getTotalValue())).substring(0, 4));
         JLabel AvgRatingLabel = new JLabel("Average Rating: ");
         JLabel AvgRatingLabel2 = new JLabel("" + collection.getAverageRating());
         JLabel CollStartDateLabel = new JLabel("Value");
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
-        JLabel CollStartDateLabel2 = new JLabel("" + sdf.format(collection.getStartDate()));
+        JLabel CollStartDateLabel2 = new JLabel(collection.getStartDate());
         JLabel LatestItemLabel = new JLabel("Latest Item: ");
-        JLabel LatestItemLabel2 = new JLabel("" + collection.getLatestItem());
+        JLabel LatestItemLabel2 = new JLabel(collection.getLatestItem());
           
         add(TotalItemsLabel);
         add(TotalItemsLabel2);

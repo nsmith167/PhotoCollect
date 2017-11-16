@@ -81,7 +81,7 @@ public class ItemUI extends JFrame {
 
         itemNameLabel = new JLabel("Item Name");
         itemDateLabel = new JLabel("Date");
-        itemValueLabel = new JLabel("Value");
+        itemValueLabel = new JLabel("Value ($)");
         itemDescriptionLabel = new JLabel("Description");
         itemNameTextField = new JTextField();
         itemDateTextField = new JTextField();
@@ -190,7 +190,7 @@ public class ItemUI extends JFrame {
         ratingButton4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                itemRating = 5;
+                itemRating = 4;
             }
         });
         ratingButton5.addActionListener(new ActionListener() {
@@ -231,7 +231,7 @@ public class ItemUI extends JFrame {
 
         itemNameLabel = new JLabel("Item Name");
         itemDateLabel = new JLabel("Date");
-        itemValueLabel = new JLabel("Value");
+        itemValueLabel = new JLabel("Value ($)");
         itemDescriptionLabel = new JLabel("Description");
         itemNameTextField = new JTextField(item.getItemName());
         itemNameTextField.setEditable(false);
