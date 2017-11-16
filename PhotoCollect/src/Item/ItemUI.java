@@ -129,7 +129,7 @@ public class ItemUI extends JFrame {
         itemImage = new ImageIcon("empty_image.jpg");
         imageLabel = new JLabel(itemImage);
         imagePanel.add(imageLabel);
-
+        
         imageInfoPanel.add(browsePhotoButton);
         imageInfoPanel.add(ratingPanel);
         imagePanel.add(imageLabel);
